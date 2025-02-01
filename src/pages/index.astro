@@ -1,0 +1,14 @@
+---
+import AsideMenuMini from "@/components/AsideMenuMini.astro";
+import IndexNav from "@/components/IndexNav.astro";
+import IndexVideos from "@/components/IndexVideos.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const { pathname } = Astro.url
+---
+
+<Layout path={pathname}>
+  <AsideMenuMini path={pathname} />
+  <IndexNav />
+  <IndexVideos />
+</Layout>

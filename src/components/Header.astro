@@ -1,0 +1,11 @@
+---
+import { SearchBar } from "./SearchBar";
+import SectionLeft from "@/components/SectionLeft.astro";
+import SectionRight from "@/components/SectionRight.astro";
+---
+
+<header class="fixed top-0 w-full h-14 flex items-center justify-between z-10 bg-[#0f0f0f]">
+  <SectionLeft />
+  <SearchBar client:load />
+  <SectionRight />
+</header>

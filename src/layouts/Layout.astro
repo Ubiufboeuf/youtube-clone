@@ -1,0 +1,60 @@
+---
+import Header from "@/components/Header.astro";
+
+interface Props {
+  title?: string;
+  path?: string;
+}
+
+const { title, path } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title ? `${title} -` : ""} Youtube clone</title>
+  </head>
+  <body
+    data-path={path ?? ""}
+    class="h-screen w-screen flex flex-col m-0 overflow-y-scroll overflow-x-hidden"
+    data-color-scheme="dark"
+  >
+    <Header />
+    <main class="min-h-[4000px] max-w-full w-full overflow-hidden z-0">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @font-face {
+    font-family: Roboto;
+    src: url("/Roboto.ttf");
+  }
+
+  :root {
+    color-scheme: dark light;
+    font-family: Roboto, "Arial", sans-serif, system-ui;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    --bg-principal: #0f0f0f;
+    --nav-width: calc(100% - 240px);
+  }
+
+  /* html:has(body[data-color-scheme="dark"]) { */
+  /* :root {
+
+      color-scheme: dark light;
+      background: var(--bg-principal);
+    }
+  } */
+</style>
