@@ -14,15 +14,16 @@ const { title, path } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title ? `${title} -` : ""} Youtube clone</title>
+    <title>{title ? `${title} -` : ""} YouTube</title>
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
   </head>
   <body
     data-path={path ?? ""}
-    class="h-screen w-screen flex flex-col m-0 overflow-y-scroll overflow-x-hidden"
+    class="h-screen w-screen flex flex-col m-0 overflow-y-auto overflow-x-hidden bg-primary [scrollbar-gutter:stable]"
     data-color-scheme="dark"
   >
     <Header />
-    <main class="min-h-[4000px] max-w-full w-full overflow-hidden z-0">
+    <main id='main' class="h-fit max-w-full w-full overflow-hidden z-0">
       <slot />
     </main>
   </body>
@@ -46,15 +47,6 @@ const { title, path } = Astro.props;
   }
 
   * {
-    --bg-principal: #0f0f0f;
     --nav-width: calc(100% - 240px);
   }
-
-  /* html:has(body[data-color-scheme="dark"]) { */
-  /* :root {
-
-      color-scheme: dark light;
-      background: var(--bg-principal);
-    }
-  } */
 </style>

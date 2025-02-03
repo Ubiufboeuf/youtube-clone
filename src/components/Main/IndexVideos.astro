@@ -1,0 +1,9 @@
+---
+import type { VideoCard } from '@/env'
+import VideosCard from './VideosCard.astro'
+
+const res = await fetch(Astro.url.origin + '/src/mocks/videos.json')
+const videos: VideoCard[] = await res.json()
+---
+
+{ videos.map(video => <VideosCard {...video} />) }

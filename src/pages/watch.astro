@@ -1,0 +1,26 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import AsideMenu from '@/components/Main/AsideMenu.astro'
+import { Video } from '@/components/Video.jsx';
+
+const { pathname: path } = Astro.url
+
+const searchParams = Astro.url.searchParams
+const params: any = {}
+searchParams.entries().forEach(([key, value]) => {
+  params[key] = value
+})
+console.log(params)
+---
+
+<Layout title='video'>
+  <input
+    id='checkbox-aside-menu'
+    type='checkbox'
+    hidden
+    class='[&:checked+#asideMenu]:[--left:0px]' />
+  <AsideMenu path={path} />
+  <section class='absolute top-14 w-full h-[4000px] min-h-full bg-primary'>
+    <Video params={params} client:load />
+  </section>
+</Layout>

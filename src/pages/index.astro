@@ -1,14 +1,19 @@
 ---
-import AsideMenuMini from "@/components/AsideMenuMini.astro";
-import IndexNav from "@/components/IndexNav.astro";
-import IndexVideos from "@/components/IndexVideos.astro";
+import AsideMenu from '@/components/Main/AsideMenu.astro';
+import AsideMenuMini from "@/components/Main/AsideMenuMini.astro";
+import IndexAsideMenu from '@/components/Main/IndexAsideMenu.astro';
+import IndexNav from "@/components/Main/IndexNav.astro";
+import IndexVideosSection from '@/components/Main/IndexVideosSection.astro'
 import Layout from "@/layouts/Layout.astro";
 
-const { pathname } = Astro.url
+const { pathname: path } = Astro.url
 ---
 
-<Layout path={pathname}>
-  <AsideMenuMini path={pathname} />
+<Layout path={path}>
+  <input id='checkbox-index-aside-menu' type='checkbox' hidden class='[&:checked+#indexAsideMenu]:[--left:0px] [&:not(:checked)~#indexNav]:w-[calc(100%-72px)] [&:not(:checked)~#indexVideos]:w-[calc(100%-72px)]' />
+  <IndexAsideMenu path={path} />
+  <!-- <AsideMenu path={path} /> -->
+  <AsideMenuMini path={path} />
   <IndexNav />
-  <IndexVideos />
+  <IndexVideosSection />
 </Layout>

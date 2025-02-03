@@ -1,0 +1,20 @@
+<section class='flex flex-1 max-w-52'>
+  <!-- <button id='video' class='bg-neutral-800'>video</button> -->
+</section>
+
+<script>
+  const btn = document.querySelector('#video')
+  const main = document.querySelector('#main')
+  btn?.addEventListener('click', () => {
+    if (main) {
+      main.innerHTML = ''
+      const video = document.createElement('video')
+      video.src = '/public/input2.webm'
+      video.autoplay = true
+      video.controls = true
+      video.style.height = '100%'
+      video.style.width = '100%'
+      main.append(video)
+    }
+  })
+</script>

@@ -1,0 +1,45 @@
+---
+import type { VideoCard } from '@/env'
+import { parseDuration, parsePublicationDate, parseViews } from '@/utils/parser'
+import { IconVerified } from '@/components/Icons'
+
+interface Props extends VideoCard {}
+
+let { id, duration, timeSeen, creator, title, views, publicationDate } = Astro.props
+timeSeen = Math.min(timeSeen, duration)
+const widthByTimeSeen = `width:calc(100%/(${duration}/${timeSeen}))`
+const parsedDuration = parseDuration(duration)
+const parsedViews = parseViews(views)
+const parsedPublicationDate = parsePublicationDate(publicationDate)
+const posterSlug = `/src/assets/posters/${id}`
+let original = 'false'
+if (title.startsWith('(original)')) {
+  original = 'true'
+}
+---
+
+<a href=`/watch?v=${id}&o=${original}` class='videoCard aspect-[3.011/2.57] w-full cursor-pointer flex px-2 pb-8 flex-col'>
+  <section class='w-full aspect-video bg-black rounded-xl flex items-end justify-center relative overflow-hidden'>
+    <div class='h-full w-full bg-neutral-700'>
+      { posterSlug && <img class='h-full w-full object-cover flex pointer-events-none select-none' src={`${posterSlug}.avif`} alt={title} /> }
+    </div>
+    <time class='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
+    <div class='w-full h-1 absolute bottom-0 bg-[#666a]'>
+      <div class='bg-red-600 h-full rounded-full' style=`${timeSeen ? widthByTimeSeen : ''}`></div>
+    </div>
+  </section>
+  <section class='w-full flex flex-1 text-sm relative pt-3 gap-2'>
+    <div class='size-10 aspect-square flex items-center justify-center'>
+      <img class='h-9 w-9 max-h-full max-w-full rounded-full' src=`/src/assets/avatars/${creator.id}.jpg` alt={creator.id} />
+    </div>
+    <div class='flex-1 text-neutral-400'>
+      <h1 class='text-base font-medium leading-[22px] line-clamp-2 text-white'>{title}</h1>
+      <span class='flex items-center justify-center w-fit h-fit gap-1 pt-1'>
+        {creator.name}
+        <div class='size-[14px] aspect-square fill-neutral-400'>{creator.verified ? <IconVerified /> : ''}</div>
+      </span>
+      <span>{parsedViews ?? 0} vistas • hace {parsedPublicationDate}</span>
+    </div>
+    <div></div>
+  </section>
+</a>  
