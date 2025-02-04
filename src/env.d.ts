@@ -1,11 +1,11 @@
 export type VideoCard = {
-  id: string,
-  duration: number,
-  timeSeen: number,
-  creator: Creator,
-  title: string,
-  views: number,
-  publicationDate: string,
+  id?: string,
+  duration?: number,
+  timeSeen?: number,
+  creator?: string,
+  title?: string,
+  views?: number,
+  publicationDate?: string,
 }
 
 export type Creator = {

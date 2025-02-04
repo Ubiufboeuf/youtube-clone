@@ -1,9 +1,23 @@
 ---
 import type { VideoCard } from '@/env'
 import VideosCard from './VideosCard.astro'
+import { db } from '@/db/client'
 
-const res = await fetch(Astro.url.origin + '/src/mocks/videos.json')
-const videos: VideoCard[] = await res.json()
+const { rows } = await db.execute('SELECT * FROM videos')
+const videos: VideoCard[] = []
+rows.forEach(row => {
+  const video = {
+    id: row.id?.toString(),
+    duration: Number(row.duration),
+    timeSeen: Number(row.timeSeen),
+    title: row.title?.toString(),
+    views: Number(row.views),
+    publicationDate: row.publicationDate?.toString(),
+    creator: row.creator?.toString()
+  }
+  videos.push(video)
+})
+console.log(videos)
 ---
 
 { videos.map(video => <VideosCard {...video} />) }
