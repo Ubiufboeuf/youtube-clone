@@ -2,16 +2,19 @@
 import type { VideoCard } from '@/env'
 import { parseDuration, parsePublicationDate, parseViews } from '@/utils/parser'
 import { IconVerified } from '@/components/Icons'
+import { getCreator } from '@/db/getCreator'
 
 interface Props extends VideoCard {}
 
-let { id, duration, timeSeen, creator, title, views, publicationDate } = Astro.props
+let { id, duration, timeSeen, creator: creatorId, title, views, publicationDate } = Astro.props
 timeSeen = Math.min(timeSeen, duration)
+const creator = await getCreator(creatorId)
+console.log(creator)
 const widthByTimeSeen = `width:calc(100%/(${duration}/${timeSeen}))`
 const parsedDuration = parseDuration(duration)
 const parsedViews = parseViews(views)
 const parsedPublicationDate = parsePublicationDate(publicationDate)
-const posterSlug = `/src/assets/posters/${id}`
+const posterSlug = `/assets/posters/${id}`
 let original = 'false'
 if (title.startsWith('(original)')) {
   original = 'true'
@@ -30,7 +33,7 @@ if (title.startsWith('(original)')) {
   </section>
   <section class='w-full flex flex-1 text-sm relative pt-3 gap-2'>
     <div class='size-10 aspect-square flex items-center justify-center'>
-      <img class='h-9 w-9 max-h-full max-w-full rounded-full' src=`/src/assets/avatars/${creator.id}.jpg` alt={creator.id} />
+      <img class='h-9 w-9 max-h-full max-w-full rounded-full' src=`/assets/avatars/${creator.id}.jpg` alt={creator.id} />
     </div>
     <div class='flex-1 text-neutral-400'>
       <h1 class='text-base font-medium leading-[22px] line-clamp-2 text-white'>{title}</h1>

@@ -9,10 +9,10 @@ export function Video ({ params }) {
     import('dashjs').then(dashjs => {
       const player = document.querySelector('#player')
       if (o === 'true') {
-        const url = `/src/server/originals/${v}.webm`
+        const url = `/videos/originals/${v}.webm`
         player.src = url
       } else {
-        const url = `/src/server/dashes/${v}/output.mpd`
+        const url = `/videos/dashes/${v}/output.mpd`
         const mediaElement = dashjs.MediaPlayer().create()
         console.log(player, url, mediaElement)
         mediaElement.initialize(player, url, true)

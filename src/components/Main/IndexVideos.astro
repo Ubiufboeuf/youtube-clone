@@ -6,6 +6,7 @@ import { db } from '@/db/client'
 const { rows } = await db.execute('SELECT * FROM videos')
 const videos: VideoCard[] = []
 rows.forEach(row => {
+  if (!row.id || !row.duration || !row.title || !row.publicationDate || !row.creator) return
   const video = {
     id: row.id?.toString(),
     duration: Number(row.duration),
@@ -17,7 +18,6 @@ rows.forEach(row => {
   }
   videos.push(video)
 })
-console.log(videos)
 ---
 
-{ videos.map(video => <VideosCard {...video} />) }
+{ videos && videos.map(video => <VideosCard {...video} />) }
