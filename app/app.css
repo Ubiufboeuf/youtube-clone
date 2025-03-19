@@ -1,15 +1,38 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: Roboto;
+  src: url('/Roboto.ttf');
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: Roboto, "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary-dark: #0F0F0F;
+  --color-primary-content-darK: white;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  --nav-width: calc(100% - 240px);
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-primary-dark;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  scrollbar-gutter: stable;
 }
