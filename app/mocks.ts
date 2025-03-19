@@ -46,7 +46,7 @@ export const media: Media[] = [
     publicationDate: '2024-02-02T12:00:00Z',
     poster: '',
     sources: {
-      'audio_only': `${serverURL}/media/h9iYgi-N5BU/audio_only`
+      'audio_only': `${serverURL}/media/h9iYg1-N5BU/audio_only`
     },
     availableOptions: ['audio_only'],
     description: ''
