@@ -1,8 +1,9 @@
-import type { Creator, Media } from '@/env'
-import { creators, media } from '@/mocks'
+import type { Creator, Video } from '@/env'
+import { creators, videos } from '@/mocks'
+export const serverURL = 'http://localhost:1234'
 // import type { Row } from '@libsql/client'
 
-// async function createMediaByRow (row: Row): Promise<Media> {
+// async function createVideoByRow (row: Row): Promise<Video> {
 // //   return {
 // //     id: row?.id?.toString() ?? '',
 // //     duration: Number(row?.duration),
@@ -11,7 +12,7 @@ import { creators, media } from '@/mocks'
 // //     title: row?.title?.toString() ?? '',
 // //     views: Number(row?.views),
 // //     publicationDate: row?.publicationDate?.toString() ?? '',
-// //     poster: row?.mediaPoster?.toString() ?? '',
+// //     poster: row?.videoPoster?.toString() ?? '',
 // //     sources: {
       
 // //     },
@@ -29,24 +30,24 @@ import { creators, media } from '@/mocks'
 //   }
 // }
 
-export async function getAllMedias () {
-  // const { rows } = await db.execute('SELECT * FROM media')
-  // const medias: Media[] = []
+export async function getAllVideos () {
+  // const { rows } = await db.execute('SELECT * FROM video')
+  // const videos: Video[] = []
   // rows.forEach(async (row) => {
-  //   medias.push(await createMediaByRow(row))
+  //   videos.push(await createVideoByRow(row))
   // })
-  // return medias
-  return media
+  // return videos
+  return videos
 }
 
-export async function getMediaById (id: string): Promise<Media> {
+export async function getVideoById (id: string): Promise<Video | undefined> {
   // const row = (await db.execute({
-  //   sql: 'SELECT * FROM media WHERE id = ?',
+  //   sql: 'SELECT * FROM video WHERE id = ?',
   //   args: [id]
   // })).rows[0]
 
-  // return await createMediaByRow(row)
-  return media.find(m => m.id === id) ?? media[0]
+  // return await createVideoByRow(row)
+  return videos.find(m => m.id === id)
 }
 
 export async function getCreatorById (id: string): Promise<Creator | undefined> {

@@ -14,7 +14,6 @@ export default function HeaderCenter () {
   }
 
   function checkVisibility (value: string) {
-    console.log(value)
     clearInputRef.current!.hidden = value ? !value : !searchValueRef.current // Si no hay valor es hidden, sino es visible
   }
 

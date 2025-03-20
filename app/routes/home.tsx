@@ -3,11 +3,11 @@ import type { Route } from './+types/home'
 import { HomeNav } from '@/components/home/HomeNav'
 import { HomeAsideMenu } from '@/components/home/HomeAsideMenu'
 import { AsideMenuMini } from '@/components/home/AsideMenuMini'
-import MediaCardFallback from '@/components/MediaCardFallback'
-import MediaCard from '@/components/MediaCard'
+import VideoCardFallback from '@/components/VideoCardFallback'
+import VideoCard from '@/components/VideoCard'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
-import type { Media } from '@/env'
-import { getAllMedias } from '@/lib/api'
+import type { Video } from '@/env'
+import { getAllVideos } from '@/lib/api'
 
 export function meta ({ }: Route.MetaArgs) {
   return [
@@ -16,31 +16,30 @@ export function meta ({ }: Route.MetaArgs) {
 }
 
 export default function home () {
-  const [mediasSugeridos, setMediasSugeridos] = useState<Media[]>()
+  const [videosSugeridos, setVideosSugeridos] = useState<Video[]>()
   const asideInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    asyncSetMediasSugeridos()
+    asyncSetVideosSugeridos()
     const opened = window.localStorage.getItem('asideDefaultOpened')
     if (asideInputRef.current) asideInputRef.current.checked = opened === 'true'
   }, [])
 
-  async function asyncSetMediasSugeridos () {
-    getAllMedias()
+  async function asyncSetVideosSugeridos () {
+    getAllVideos()
       // .then(res => res.json())
       .then(data => {
-        // setMediasSugeridos(data)
-        setMediasSugeridos(data)
+        // setVideosSugeridos(data)
+        setVideosSugeridos(data)
       })
       .catch(() => {
-        console.error('Error consiguiendo los medias')
+        console.error('Error consiguiendo los videos')
       })
   }
 
   function handleAsideInput (event: ChangeEvent<HTMLInputElement>) {
     const { checked } = event.target
     window.localStorage.setItem('asideDefaultOpened', checked.toString())
-    console.log({checked})
   }
 
   return (
@@ -50,7 +49,7 @@ export default function home () {
         type='checkbox'
         className='
           [&:checked+#homeAsideMenu]:left-[0px] [&:not(:checked)+#homeAsideMenu]:-left-[240px]
-          [&:not(:checked)~#homeNav]:w-[calc(100%-72px)] [&:not(:checked)~#homeMedias]:w-[calc(100%-72px)]
+          [&:not(:checked)~#homeNav]:w-[calc(100%-72px)] [&:not(:checked)~#homeVideos]:w-[calc(100%-72px)]
         '
         hidden
         ref={asideInputRef}
@@ -61,31 +60,31 @@ export default function home () {
       </aside>
       <AsideMenuMini />
       <HomeNav />
-      <section id='homeMedias' className='absolute top-28 right-0 flex h-full w-[var(--nav-width)]'>
+      <section id='homeVideos' className='absolute top-28 right-0 flex h-full w-[var(--nav-width)]'>
         <div className='min-h-full h-fit w-full max-w-full grid grid-cols-[repeat(auto-fill,minmax(312px,1fr))] p-6 gap-4 justify-center items-start'>
           {
-            mediasSugeridos && mediasSugeridos.map(media => {
+            videosSugeridos && videosSugeridos.map(video => {
               return (
-                <MediaCard key={crypto.randomUUID()} media={media} />
+                <VideoCard key={crypto.randomUUID()} video={video} />
               )
             })
           }
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
-          <MediaCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
+          <VideoCardFallback />
         </div>
       </section>
     </>

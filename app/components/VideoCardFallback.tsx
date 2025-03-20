@@ -1,4 +1,4 @@
-const MediaCardFallback = () => (
+const VideoCardFallback = () => (
   <article className='mediaCardFallback h-full w-full flex flex-col'>
     <section className='w-full aspect-video bg-neutral-700 rounded-xl' />
     <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1'>
@@ -11,4 +11,4 @@ const MediaCardFallback = () => (
   </article>
 )
 
-export default MediaCardFallback
+export default VideoCardFallback

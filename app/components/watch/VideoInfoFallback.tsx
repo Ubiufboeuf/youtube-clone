@@ -1,0 +1,5 @@
+export function VideoInfoFallback () {
+  return (
+    ''
+  )
+}

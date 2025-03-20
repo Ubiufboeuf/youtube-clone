@@ -1,8 +1,6 @@
-import type { Creator, Media } from './env'
+import type { Creator, Video } from './env'
 
-const serverURL = 'http://localhost:1234'
-
-export const media: Media[] = [
+export const videos: Video[] = [
   {
     id: '35nV_M3asRs',
     duration: 241,
@@ -11,12 +9,9 @@ export const media: Media[] = [
     title: 'インソムニア (INSOMNIA) - Eve Music Video',
     views: 13610469,
     publicationDate: '2024-06-09T12:00:00Z',
-    poster: `${serverURL}/media/35nV_M3asRs/hqdefault.avif`,
-    sources: {
-      'audio_only': `${serverURL}/media/35nV_M3asRs/audio_only`,
-      '720p': `${serverURL}/media/35nV_M3asRs/720p`
-    },
-    availableOptions: ['audio_only', '720p', '2160p'],
+    posters: ['hqdefault', 'hq720'],
+    availableOptions: ['audio_only', '720p'],
+    selectedOption: 'audio_only',
     description: 'aasdasdasd'
   },
   {
@@ -27,13 +22,9 @@ export const media: Media[] = [
     title: 'さよならエンドロール - Eve MV',
     views: 3855773,
     publicationDate: '2024-12-24T12:00:00Z',
-    poster: `${serverURL}/media/VOChndxKi6U/hqdefault.avif`,
-    sources: {
-      'audio_only': `${serverURL}/media/VOChndxKi6U/audio_only`,
-      '720p': `${serverURL}/media/VOChndxKi6U/720p`,
-      '2160p': `${serverURL}/media/VOChndxKi6U/2160p`
-    },
+    posters: ['hqdefault', 'hq720'],
     availableOptions: ['audio_only', '720p', '2160p'],
+    selectedOption: 'audio_only',
     description: 'aasdasdasd'
   },
   {
@@ -44,11 +35,9 @@ export const media: Media[] = [
     title: 'Persona 3 Reload All Vocal Music',
     views: 527717,
     publicationDate: '2024-02-02T12:00:00Z',
-    poster: '',
-    sources: {
-      'audio_only': `${serverURL}/media/h9iYg1-N5BU/audio_only`
-    },
+    posters: ['hq720'],
     availableOptions: ['audio_only'],
+    selectedOption: 'audio_only',
     description: ''
   }
   // {
@@ -73,8 +62,6 @@ export const creators: Creator[] = [
     id: 'ooo0eve0ooo',
     name: 'eve',
     verified: true,
-    avatar: `${serverURL}/avatar/ooo0eve0ooo`,
-    avatar_icon: `${serverURL}/avatar_icon/ooo0eve0ooo`,
     description: 'Eve - OFFICIAL CHANNEL',
     links: [
       { name: 'Twitter', link: 'twitter.com/oO0Eve0Oo' },
@@ -95,8 +82,6 @@ export const creators: Creator[] = [
     id: 'midulive',
     name: 'midulive',
     verified: true,
-    avatar: `${serverURL}/avatar/midulive`,
-    avatar_icon: `${serverURL}/avatar_icon/midulive`,
     description: 'Streamings sobre Desarrollo FullStack con JavaScript de midudev en Twitch. Directos completos y extracto de los mejores momentos.',
     links: [
       { name: 'CANAL PRINCIPAL', link: 'youtube.com/c/midudev?sub_confirmation=1' },

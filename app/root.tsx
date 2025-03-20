@@ -10,12 +10,32 @@ import {
 import type { Route } from './+types/root'
 import './app.css'
 import Header from './components/Header/Header'
+import { useEffect, useState } from 'react'
+import { useSearchParamsStore } from './stores/useSearchParams'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', href: '/favicon.png' }
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [url, setUrl] = useState<URL>()
+  const videoId = useSearchParamsStore((state) => state.videoId)
+  const updateVideoId = useSearchParamsStore((state) => state.updateVideoId)
+  
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    setUrl(url)
+    const v = url.searchParams.get('v')
+    if (v) {
+      updateVideoId(v)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('url updated')
+  }, [url])
+  
+
   return (
     <html lang='es' className='[scrollbar-color:darkgray_transparent]'>
       <head>

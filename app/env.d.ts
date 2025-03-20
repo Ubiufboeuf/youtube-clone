@@ -1,4 +1,4 @@
-export type Media = {
+export type Video = {
   id: string
   duration: number
   timeSeen: number
@@ -6,9 +6,9 @@ export type Media = {
   title: string
   views: number
   publicationDate: string
-  poster: string
-  sources: { [key: string]: string }
+  posters: string[]
   availableOptions: string[]
+  selectedOption: string,
   description: string
 }
 
@@ -21,8 +21,6 @@ export type Creator = {
   id: string
   name: string
   verified: boolean | 'music'
-  avatar: string
-  avatar_icon: string
   description: string
   links: {
     name: string
