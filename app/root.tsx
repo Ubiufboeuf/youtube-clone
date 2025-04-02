@@ -4,37 +4,41 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
+  useLocation
 } from 'react-router'
 
 import type { Route } from './+types/root'
 import './app.css'
 import Header from './components/Header/Header'
-import { useEffect, useState } from 'react'
-import { useSearchParamsStore } from './stores/useSearchParams'
+import { useEffect, useRef, type ChangeEvent } from 'react'
+import { AsideMenu } from './components/home/AsideMenu'
+import { AsideMenuMini } from './components/home/AsideMenuMini'
+import { useLocationStore } from './stores/useLocationStore'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', href: '/favicon.png' }
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [url, setUrl] = useState<URL>()
-  const videoId = useSearchParamsStore((state) => state.videoId)
-  const updateVideoId = useSearchParamsStore((state) => state.updateVideoId)
-  
+  const asideInputRef = useRef<HTMLInputElement>(null)
+  const location = useLocation()
+  const updateLocation = useLocationStore((state) => state.updateLocation)
+
+  function handleAsideInput (event: ChangeEvent<HTMLInputElement>) {
+    const { checked } = event.target
+    window.localStorage.setItem('asideDefaultOpened', checked.toString())
+  }
+
   useEffect(() => {
-    const url = new URL(window.location.href)
-    setUrl(url)
-    const v = url.searchParams.get('v')
-    if (v) {
-      updateVideoId(v)
-    }
+    const opened = window.localStorage.getItem('asideDefaultOpened')
+    if (asideInputRef.current) asideInputRef.current.checked = opened === 'true'
   }, [])
 
   useEffect(() => {
-    console.log('url updated')
-  }, [url])
-  
+    console.log('location', location)
+    updateLocation(location)
+  }, [location])
 
   return (
     <html lang='es' className='[scrollbar-color:darkgray_transparent]'>
@@ -46,9 +50,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className='h-fit'>
+      <body>
+        <input
+          id='checkbox-home-aside-menu'
+          type='checkbox'
+          className='
+            [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
+            [&:checked~main>#closeAsideMenu]:left-[240px] [&:not(:checked)~main>#closeAsideMenu]:-left-[100vw]
+            ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)] ml:[&:not(:checked)~main>#homeVideos]:w-[calc(100%-72px)]
+          '
+          hidden
+          ref={asideInputRef}
+          onInput={handleAsideInput}
+        />
         <Header />
         <main id='main' className='h-fit max-w-full w-full overflow-hidden z-0 pt-14'>
+          <AsideMenu />
+          <AsideMenuMini />
           {children}
         </main>
         <ScrollRestoration />

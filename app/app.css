@@ -9,6 +9,20 @@
   --font-sans: Roboto, "Inter", ui-sans-serif, system-ui, sans-serif;
   --color-primary-dark: #0F0F0F;
   --color-primary-content-darK: white;
+  
+  --breakpoint-ml: 792px;
+  --breakpoint-ms: 703px;
+  --breakpoint-xs: 501px;
+
+  --color-gradient: linear-gradient(to right, #FF0033, #F50057);
+  --color-pink-start: color-mix(in srgb, white 30%, #FF0033);
+  --color-pink-end: color-mix(in srgb, white 30%, #F50057);
+  --color-pink-gradient: linear-gradient(to right, var(--color-pink-start), var(--color-pink-end));
+  --color-red: #FF0033;
+  --color-red-bg: color-mix(in srgb, white 6%, #FF0033 6%);
+  --color-red-btn: color-mix(in srgb, white 20%, black 20%, #FF325B);
+  --color-red-light: #FFAABB;
+  --color-bg-selected: #FFAABB24;
 }
 
 *,

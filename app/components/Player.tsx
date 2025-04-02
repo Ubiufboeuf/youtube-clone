@@ -6,7 +6,7 @@ import { VideoOptions } from './VideoOptions'
 import type { Video } from '@/env'
 import type dashjs from 'dashjs'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
-import { useSearchParamsStore } from '@/stores/useSearchParams'
+import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 
 export function Player ({ videoInfo }: { videoInfo: Video }) {
   const playerElement = useRef<HTMLVideoElement>(null)
@@ -110,13 +110,17 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
     if (sliderRef.current) sliderRef.current.value = target.currentTime.toString()
   }
 
+  function toggleControls () {
+    
+  }
+
   return (
-    <main ref={playerWrapperRef} className='h-120 bg-black flex items-center justify-center relative'>
-      <div className='relative h-full w-fit'>
+    <main ref={playerWrapperRef} className='h-fit bg-black flex items-center justify-center relative'>
+      <div className='relative h-auto w-fit' onClick={toggleControls}>
         <video
           ref={playerElement}
           id='videoElement'
-          className='h-full w-auto bg-transparent'
+          className='h-auto w-auto bg-black'
           onPlaying={handlePlaying}
           onPause={handlePause}
           onTimeUpdate={handleTimeUpdate}

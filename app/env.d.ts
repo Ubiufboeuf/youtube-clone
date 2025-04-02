@@ -5,7 +5,7 @@ export type Video = {
   creatorId: string
   title: string
   views: number
-  publicationDate: string
+  publicationDateTime: string
   posters: string[]
   availableOptions: string[]
   selectedOption: string,
@@ -13,8 +13,8 @@ export type Video = {
 }
 
 type AvailableOptions = 'audio_only' | '144p' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p'
-type Sources = {
-  [key: AvailableOptions]: string
+type Sources<T> = {
+  [Property in keyof T]: string
 }
 
 export type Creator = {
@@ -40,4 +40,11 @@ export type Player = {
   currentTime: number | undefined
   duration: number
   paused: boolean
+}
+
+export type ItemAside = {
+  name: string
+  path: string
+  type?: string
+  Icon: ({ active }: { active?: boolean | undefined }) => JSX.Element
 }

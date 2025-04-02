@@ -1,47 +1,62 @@
+/* eslint-disable react/prop-types */
 import { Link } from 'react-router'
-import { IconHome, IconShorts, IconSubscriptions, IconYou } from '../Icons'
+import { IconCollections, IconExplore, IconHistory, IconHome, IconLikedVideos, IconPlaylists, IconShorts, IconSubscriptions, IconTV, IconWatchLater } from '../Icons'
+import { v4 as uuidv4 } from 'uuid'
+import { useEffect, useState } from 'react'
+import { useLocationStore } from '@/stores/useLocationStore'
+import type { ItemAside } from '@/env'
 
-const path: string = '/'
-const paths = {
-  home: '/',
-  shorts: '/shorts',
-  subs: '/feed/subscriptions',
-  you: '/feed/you'
-}
+const itemsAside: ItemAside[][] = [
+  [
+    { name: 'Principal', path: '/', Icon: ({ active = false }) => <IconHome active={active} /> },
+    { name: 'Explorar', path: '/explore', Icon: ({ active = false }) => <IconExplore active={active} /> },
+    { name: 'Shorts', path: '/shorts', Icon: ({ active = false }) => <IconShorts active={active} /> },
+    { name: 'Modo TV', path: '/tv', Icon: ({ active = false }) => <IconTV active={active} /> }
+  ],
+  [
+    { name: 'Historial', path: '/you/history', Icon: ({ active = false }) => <IconHistory active={active} /> },
+    { name: 'Ver luego', path: '/you/watch_later', Icon: ({ active = false }) => <IconWatchLater active={active} /> },
+    { name: 'Gustados', path: '/you/liked_videos', Icon: ({ active = false }) => <IconLikedVideos active={active} /> },
+    { name: 'Playlists', path: '/you/playlists', type: 'expand', Icon: ({ active = false }) => <IconPlaylists active={active} /> }
+  ],
+  [
+    { name: 'Colecciones', path: '/you/collections', type: 'expand', Icon: ({ active = false }) => <IconCollections active={active} /> },
+    { name: 'Suscripciones', path: '/you/subscriptions', type: 'expand', Icon: ({ active = false }) => <IconSubscriptions active={active} /> }
+  ]
+]
+
 
 export function AsideMenuMini () {
+  const [pathname, setPathname] = useState<string>('')
+  const location = useLocationStore((state) => state.location)
+
+  useEffect(() => {
+    if (!location) return
+    setPathname(location.pathname)
+  }, [location])
+
   return (
     <aside
       id='aside-menu-mini'
-      className='
-        fixed top-14 flex w-[72px] z-[1] left-0 flex-col items-center py-1 bg-primary-dark
-        [&>a]:w-16 [&>a]:h-[74px] [&>a]:rounded-[10px] [&>a]:fill-white [&>a]:flex [&>a]:justify-center [&>a]:items-center [&>a]:flex-col [&>a]:gap-[5px] [&>a]:pt-[1px] [&>a]:cursor-pointer [&>a]:[transition_.2s_ease] [&>a:hover]:bg-[#323232] [&>a>div]:size-6 [&>a>span]:text-[10px]
-      '
+      className='w-18 px-2 hidden ml:flex flex-col items-center py-3 fixed left-0 bg-primary-dark'
     >
-      <Link to={paths.home}>
-        <div>
-          <IconHome active={path === paths.home} />
-        </div>
-        <span>Principal</span>
-      </Link>
-      <Link to={paths.shorts}>
-        <div>
-          <IconShorts active={path === paths.shorts} />
-        </div>
-        <span>Shorts</span>
-      </Link>
-      <Link to={paths.subs}>
-        <div>
-          <IconSubscriptions active={path === paths.subs} />
-        </div>
-        <span>Suscripciones</span>
-      </Link>
-      <Link to={paths.you}>
-        <div>
-          <IconYou active={path === paths.you} />
-        </div>
-        <span>Tú</span>
-      </Link>
+      {
+        itemsAside.map((el) => el.map(({ Icon, path }) => {
+          return (
+            <Link
+              key={uuidv4()}
+              to={path}
+              className={`${path === pathname ? 'actualPathMini bg-bg-selected font-medium' : 'hover:bg-neutral-800'}
+                h-10 aspect-square flex flex-col rounded-lg items-center justify-center
+              `}
+            >
+              <div className='h-6 aspect-square'>
+                <Icon active={path === pathname} />
+              </div>
+            </Link>
+          )
+        }))
+      }
     </aside>
   )
 }

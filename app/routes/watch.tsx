@@ -8,8 +8,9 @@ import { VideoInfo } from '@/components/watch/VideoInfo'
 import VideoCard from '@/components/VideoCard'
 import { Player } from '@/components/Player'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
-import { useSearchParamsStore } from '@/stores/useSearchParams'
+import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 // import { useSearchParams } from 'react-router'
+import { v4 as uuidv4 } from 'uuid'
 
 export function meta ({ }: Route.MetaArgs) {
   return [
@@ -61,7 +62,7 @@ export default function watch () {
             {
               videosList?.length && videosList?.length > 0 && (
                 videosList.map(video => {
-                  return <VideoCard key={crypto.randomUUID()} video={video} />
+                  return <VideoCard key={uuidv4()} video={video} />
                 })
               )
             }

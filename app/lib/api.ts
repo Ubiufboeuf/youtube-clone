@@ -1,6 +1,6 @@
 import type { Creator, Video } from '@/env'
 import { creators, videos } from '@/mocks'
-export const serverURL = 'http://localhost:1234'
+export const serverURL = 'http://192.168.1.4:1234'
 // import type { Row } from '@libsql/client'
 
 // async function createVideoByRow (row: Row): Promise<Video> {
@@ -11,7 +11,7 @@ export const serverURL = 'http://localhost:1234'
 // //     creatorId: '',
 // //     title: row?.title?.toString() ?? '',
 // //     views: Number(row?.views),
-// //     publicationDate: row?.publicationDate?.toString() ?? '',
+// //     publicationDate: row?.publicationDateTime?.toString() ?? '',
 // //     poster: row?.videoPoster?.toString() ?? '',
 // //     sources: {
       

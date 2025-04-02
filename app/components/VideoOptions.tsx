@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import type { Video } from '@/env'
 import { useRef, useState, type ChangeEvent } from 'react'
 
@@ -17,9 +18,9 @@ export function VideoOptions ({ videoInfo }: { videoInfo: Video }) {
   return (
     <div ref={optionsWrapperRef} className='absolute right-0 h-fit w-fit bg-neutral-900 text-neutral-100 flex flex-col'>
       {
-        options.map(option => {
+        options.map((option, idx) => {
           return (
-            <label key={crypto.randomUUID()} className='flex gap-2 p-2'>
+            <label key={uuidv4()} className='flex gap-2 p-2'>
               <input
                 type='checkbox'
                 name='options'
