@@ -4,8 +4,7 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
-  useLocation
+  ScrollRestoration
 } from 'react-router'
 
 import type { Route } from './+types/root'
@@ -14,7 +13,6 @@ import Header from './components/Header/Header'
 import { useEffect, useRef, type ChangeEvent } from 'react'
 import { AsideMenu } from './components/home/AsideMenu'
 import { AsideMenuMini } from './components/home/AsideMenuMini'
-import { useLocationStore } from './stores/useLocationStore'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', href: '/favicon.png' }
@@ -22,8 +20,6 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const asideInputRef = useRef<HTMLInputElement>(null)
-  const location = useLocation()
-  const updateLocation = useLocationStore((state) => state.updateLocation)
 
   function handleAsideInput (event: ChangeEvent<HTMLInputElement>) {
     const { checked } = event.target
@@ -34,12 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     const opened = window.localStorage.getItem('asideDefaultOpened')
     if (asideInputRef.current) asideInputRef.current.checked = opened === 'true'
   }, [])
-
-  useEffect(() => {
-    console.log('location', location)
-    updateLocation(location)
-  }, [location])
-
+  
   return (
     <html lang='es' className='[scrollbar-color:darkgray_transparent]'>
       <head>
@@ -56,8 +47,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           type='checkbox'
           className='
             [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
-            [&:checked~main>#closeAsideMenu]:left-[240px] [&:not(:checked)~main>#closeAsideMenu]:-left-[100vw]
-            ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)] ml:[&:not(:checked)~main>#homeVideos]:w-[calc(100%-72px)]
+            [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
+            ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
+            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:w-[calc(100%-72px)]
+            ml:[&:checked~main>:is(#home,#homeNav)]:ml:w-[var(--nav-width)]
+            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:absolute
+            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:right-0
+            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:[transition:width_250ms_ease]
           '
           hidden
           ref={asideInputRef}

@@ -17,7 +17,7 @@ export function parseDuration (duration: number) {
   const hh = duration > 3600 ? `${Math.floor(duration / 3600)}` : 0
   const mm = `${Math.floor((duration - (3600 * Number(hh))) / 60)}`.padStart(1, '0')
   const ss = `${Math.floor(duration % 60)}`.padStart(2, '0')
-  return `${hh ? `${hh}:` : ''}${mm}:${ss}`
+  return `${hh ? `${hh}:` : ''}${hh ? mm.padStart(2,'0') : mm}:${ss}`
 }
 
 export function parseViews (views: number) {
@@ -56,7 +56,7 @@ export function parsePublicationDate (publicationDate: string) {
   const now = Temporal.Now.instant()
   const dif = now.since(instant).seconds
 
-  // Para que no tengas que leer de abajo, se encarga de mostrar hace cuánto se publicó el elemento media: años, meses, etc
+  // Para que no tengas que leer de abajo, esto se encarga de mostrar hace cuánto se publicó el video: años, meses, etc
   if (dif >= 31536000) return `${Math.floor(dif / 31536000)} ${Math.floor(dif / 31536000) === 1 ? 'año' : 'años'}`
   else if (dif >= 2678400) return `${Math.floor(dif / 2678400)} ${Math.floor(dif / 2678400) === 1 ? 'mes' : 'meses'}`
   else if (dif >= 604800) return `${Math.floor(dif / 604800)} ${Math.floor(dif / 604800) === 1 ? 'semana' : 'semanas'}`

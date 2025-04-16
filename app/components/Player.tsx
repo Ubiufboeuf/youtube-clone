@@ -1,16 +1,15 @@
-import { getVideoById, serverURL } from '@/lib/api'
+import { getVideoById } from '@/lib/api'
 import { parseDuration } from '@/lib/utils'
 import { usePlayerStore } from '@/stores/usePlayerStore'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
-import { VideoOptions } from './VideoOptions'
+import { VideoQualities } from './VideoQualities'
 import type { Video } from '@/env'
-import type dashjs from 'dashjs'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 
 export function Player ({ videoInfo }: { videoInfo: Video }) {
-  const playerElement = useRef<HTMLVideoElement>(null)
-  const playerWrapperRef = useRef<HTMLDivElement>(null)
+  const videoElementRef = useRef<HTMLVideoElement>(null)
+  const videoElementWrapperRef = useRef<HTMLDivElement>(null)
   const controlsRef = useRef<HTMLDivElement>(null)
   const sliderRef = useRef<HTMLInputElement>(null)
 
@@ -22,13 +21,14 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
   const setCurrentTime = usePlayerStore((state) => state.updateCurrentTime)
   const setDuration = usePlayerStore((state) => state.updateDuration)
   const setPaused = usePlayerStore((state) => state.updatePaused)
-  
+
   const videoId = useSearchParamsStore((state) => state.videoId)
   const updateVideoId = useSearchParamsStore((state) => state.updateVideoId)
 
-  const [videoOption, setVideoOption] = useState<string>('')
-  const [videoElement, setVideoElement] = useState<dashjs.MediaPlayerClass>()
+  const [videoQuality, setVideoQuality] = useState<string>('')
+  const [player, setPlayer] = useState()
   const [url, setURL] = useState<URL>()
+  const [dashjs, setDashjs] = useState(null)
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -36,21 +36,19 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
     const videoId = url.searchParams.get('v')
     if (!videoId) return
     updateVideoId(videoId)
+
+    import('dashjs')
+      .then(data => {
+        console.log('dashjs: ', data)
+      })
   }, [])
 
   useEffect(() => {
     if (!videoId) return
-    import('dashjs').then(dashjs => {
-      setNewVideoSource({ dashjs })
-    })
+    setNewVideoSource()
   }, [videoId])
 
-  useEffect(() => {
-    
-  }, [])
-  
-
-  async function setNewVideoSource ({ dashjs }: { dashjs: dashjs }) {
+  async function setNewVideoSource () {
     if (!videoId) return
     const t = url?.searchParams.get('t')
     const newVideoInfo = await getVideoById(videoId)
@@ -59,49 +57,48 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
       return
     }
     updateVideoInfo(newVideoInfo)
-    const newVideoOption = newVideoInfo?.selectedOption ?? newVideoInfo?.availableOptions[0]
+    const newVideoQuality = newVideoInfo?.selectedQuality ?? newVideoInfo?.qualities[0]
     /*                     ↑ eso va por usuario, debería cambiarlo, pero aún no tengo usuarios */
-    if (!newVideoOption) {
+    if (!newVideoQuality) {
       console.error('El video no tiene opciones de visualización')
       return
     }
-    setVideoOption(newVideoOption)
+    setVideoQuality(newVideoQuality)
     setCurrentTime(newVideoInfo.timeSeen)
     setDuration(newVideoInfo.duration)
     setPaused(true)
-    let newVideoElement
-    if (!playerElement.current) return
-    const videoSource = `${serverURL}/video/${newVideoInfo.id}/${newVideoOption}/output.mpd`
-    if (videoElement) {
-      videoElement.initialize(playerElement.current, videoSource, true, t ?? newVideoInfo?.timeSeen ?? 0)
+    if (!videoElementRef.current) return
+    // const videoSource = `${SERVER_URL}/videos/${newVideoInfo.id}/manifest.mpd`
+    initializePlayer(player, t ?? 0)
+  }
+
+  function initializePlayer (player: MediaPlayerClass | undefined, t?: string | number) {
+    if (player) {
+      player.initialize(videoElementRef.current, videoInfo.source, true, t ?? videoInfo?.timeSeen ?? 0)
     } else {
-      newVideoElement = dashjs.MediaPlayer().create()
-      setVideoElement(newVideoElement)
-      newVideoElement.initialize(playerElement.current, videoSource, true, t ?? newVideoInfo?.timeSeen ?? 0)
+      const newPlayer = MediaPlayer().create()
+      setPlayer(newPlayer)
+      initializePlayer(newPlayer)
+      // newVideoElement.initialize(videoElement.current, videoSource, false, t ?? newVideoInfo?.timeSeen ?? 0)
     }
   }
 
   function togglePlay () {
-    if (!playerElement.current) return
-    if (playerElement.current.paused) {
-      playerElement.current.play()
+    if (!videoElementRef.current) return
+    if (videoElementRef.current.paused) {
+      videoElementRef.current.play()
     } else {
-      playerElement.current.pause()
+      videoElementRef.current.pause()
     }
   }
 
-  function handlePlaying () {
-    setPaused(false)
-  }
-
-  function handlePause () {
-    setPaused(true)
-  }
+  const handlePlaying = () => setPaused(false)
+  const handlePause = () => setPaused(true)
 
   function updateCurrentTime (event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target
     setCurrentTime(Number(value))
-    if (playerElement.current) playerElement.current.currentTime = Number(value)
+    if (videoElementRef.current) videoElementRef.current.currentTime = Number(value)
   }
 
   function handleTimeUpdate (event: ChangeEvent<HTMLVideoElement>) {
@@ -115,10 +112,10 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
   }
 
   return (
-    <main ref={playerWrapperRef} className='h-fit bg-black flex items-center justify-center relative'>
+    <main ref={videoElementWrapperRef} className='h-fit bg-black flex items-center justify-center relative z-[96]'>
       <div className='relative h-auto w-fit' onClick={toggleControls}>
         <video
-          ref={playerElement}
+          ref={videoElementRef}
           id='videoElement'
           className='h-auto w-auto bg-black'
           onPlaying={handlePlaying}
@@ -127,10 +124,10 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
         />
         {/* <button id='start' onClick={togglePlay} className='absolute z-10 h-full w-full left-0 top-0'></button> */}
         <div id='posterWrapper' className='absolute left-1/2 top-1/2 [transform:translate(-50%,-50%)] h-full w-full max-h-full max-w-full overflow-hidden pointer-events-none'>
-          { videoInfo?.selectedOption === 'audio_only' && <img src={`${serverURL}/background/${videoInfo.id}`} onError={(e) => e.currentTarget.style.display = 'none'} className='h-ful w-full max-w-full max-h-full object-contain' /> }
+          {/* { videoInfo?.selectedQuality === 'audio_only' && <img src={''} onError={(e) => e.currentTarget.style.display = 'none'} className='h-ful w-full max-w-full max-h-full object-contain' /> } */}
         </div>
       </div>
-      { videoInfo && <VideoOptions videoInfo={videoInfo} /> }
+      { videoInfo && <VideoQualities videoInfo={videoInfo} /> }
       <div ref={controlsRef} id='controls' className='absolute z-20 bottom-0 h-14 w-full bg-[#000c] px-6 py-1'>
         <input
           ref={sliderRef}
@@ -142,15 +139,15 @@ export function Player ({ videoInfo }: { videoInfo: Video }) {
           className='absolute top-0 left-[50%] [transform:translateX(-50%)] w-[calc(100%-48px)] h-0.5 bg-white accent-red-500'
           defaultValue={videoInfo?.timeSeen}
           onInput={updateCurrentTime}
-          onMouseDown={() => playerElement.current?.pause()}
-          onMouseUp={() => playerElement.current?.play()}
+          onMouseDown={() => videoElementRef.current?.pause()}
+          onMouseUp={() => videoElementRef.current?.play()}
         />
         <div className='h-full flex-1'>
           <button id='togglePlay' onClick={togglePlay}>{paused ? 'Paused' : 'Playing'}</button>
           <div>
             <time id='currentTime'>{parseDuration(Math.floor(currentTime ?? videoInfo?.timeSeen ?? 0))}</time>
             /
-            <time id='duration'>{parseDuration(duration || playerElement.current?.duration || 0)}</time>
+            <time id='duration'>{parseDuration(duration || videoElementRef.current?.duration || 0)}</time>
           </div>
         </div>
       </div>

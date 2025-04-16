@@ -1,0 +1,8 @@
+Hago esto porque me estoy confundiendo con los z-index
+
+100 - header, asideMenu
+99 - closeAsideMenu
+98 - asideMenuMini
+97 - miniPlayer
+96 - player
+90 - homeNav

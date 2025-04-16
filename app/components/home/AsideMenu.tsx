@@ -10,7 +10,7 @@ import { useLocationStore } from '@/stores/useLocationStore'
 
 const itemsAside: ItemAside[][] = [
   [
-    { name: 'Principal', path: '/', Icon: ({ active = false }) => <IconHome active={active} /> },
+    { name: 'Inicio', path: '/', Icon: ({ active = false }) => <IconHome active={active} /> },
     { name: 'Explorar', path: '/explore', Icon: ({ active = false }) => <IconExplore active={active} /> },
     { name: 'Shorts', path: '/shorts', Icon: ({ active = false }) => <IconShorts active={active} /> },
     { name: 'Modo TV', path: '/tv', Icon: ({ active = false }) => <IconTV active={active} /> }
@@ -74,7 +74,13 @@ export function AsideMenu () {
           </section>
         </div>
       </aside>
-      <label id='closeAsideMenu' role='button' className='fixed h-full w-full top-0 bg-[#0006] z-[101]' htmlFor='checkbox-home-aside-menu' hidden />
+      <label
+        id='closeAsideMenu'
+        role='button'
+        className='fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]'
+        htmlFor='checkbox-home-aside-menu'
+        hidden={path === '/'}
+      />
     </>
   )
 }

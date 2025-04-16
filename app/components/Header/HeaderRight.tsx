@@ -19,7 +19,7 @@ export default function HeaderRight () {
           <IconSettings />
         </div>
       </Link>
-      <Link to='' className='h-10 max-h-full aspect-square flex items-center justify-center rounded-full hover:bg-neutral-800 transition-colors'>
+      <Link to='' className='h-10 max-h-full aspect-square flex items-center justify-center rounded-full hover:bg-neutral-800 transition-colors bg-neutral-900'>
         <div className='size-6 flex items-center justify-center overflow-hidden'>
           {/* <user.Icon /> */}
         </div>

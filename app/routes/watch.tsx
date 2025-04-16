@@ -1,7 +1,7 @@
 import { title } from '@/lib/utils'
 import type { Route } from './+types/watch'
 import { useEffect, useState } from 'react'
-import { getAllVideos, serverURL } from '@/lib/api'
+import { getAllVideos } from '@/lib/api'
 import type { Video } from '@/env'
 import { VideoInfoFallback } from '@/components/watch/VideoInfoFallback'
 import { VideoInfo } from '@/components/watch/VideoInfo'
@@ -18,7 +18,7 @@ export function meta ({ }: Route.MetaArgs) {
   ]
 }
 
-export default function watch () {
+export default function Watch () {
   const [videosList, setVideosList] = useState<Video[]>()
   const videoInfo = useVideoInfoStore((state) => state.videoInfo)
   const videoId = useSearchParamsStore((state) => state.videoId)
@@ -33,22 +33,22 @@ export default function watch () {
     //   getAllVideos()
     // }, [videoId])
     
-    setVideosList(await getAllVideos())
+    setVideosList(await getAllVideos({ from: 0, to: 20 }))
   }
 
   return (
     <>
-      <div className='h-[2000px]'>
+      <div id='watch' className='h-[2000px]'>
         <Player videoInfo={videoInfo} />
         <section className='w-full h-full min-h-fit flex justify-between max-w-[3840px] mx-auto gap-0'>
           <div className='w-full flex-1 h-full min-h-fit px-8 py-6'>
             <header id='videoInfo' className='h-32 min-h-fit w-full bg-neutral-700 rounded-xl px-4 py-3'>
               { videoInfo ? <VideoInfo video={videoInfo} /> : <VideoInfoFallback /> }
               {
-                videoInfo?.posters.length && videoInfo.posters.length > 0 && (
+                videoInfo.poster && (
                   <img
                     className='h-fit w-full object-cover flex pointer-events-none select-none'
-                    src={`${serverURL}/poster/${videoInfo.id}`}
+                    src={videoInfo.poster}
                     alt={videoInfo.title}
                   />
                 )

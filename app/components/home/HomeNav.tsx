@@ -1,6 +1,7 @@
 import { useRef, type ChangeEvent } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { IconMagicFeed } from '../Icons'
+import { useVideosListStore } from '@/stores/useVideosListStore'
 
 const TAG_FILTERS = {
   ALL: 'all',
@@ -17,6 +18,8 @@ const tags = [
 
 export function HomeNav () {
   const tagsWrapperRef = useRef<HTMLDivElement>(null)
+  const videosList = useVideosListStore((state) => state.videosList)
+  
   function handleChange (event: ChangeEvent<HTMLInputElement>) {
     // De alguna forma lo de abajo funciona perfecto ._.
     const { currentTarget: input } = event
@@ -40,7 +43,8 @@ export function HomeNav () {
   return (
     <nav
       id='homeNav'
-      className='fixed right-0 [transition:width_250ms_ease] top-14 h-10 flex items-end xs:h-14 py-2 w-full ml:w-[calc(100%-240px)] bg-primary-dark px-6 z-[1]'
+      hidden={!videosList || !videosList.length}
+      className='fixed right-0 [transition:width_250ms_ease] top-14 h-10 flex items-end xs:h-14 py-2 w-full ml:w-[calc(100%-240px)] bg-primary-dark px-6 z-[90]'
     >
       <div className='max-w-full w-full gap-3 flex items-center h-7 xs:h-9 overflow-x-auto [scrollbar-width:none]'>
         <button className='h-full min-w-7 xs:min-w-fit flex items-center justify-center cursor-pointer px-1 xs:px-3 bg-neutral-700 xs:rounded-lg rounded-md'>

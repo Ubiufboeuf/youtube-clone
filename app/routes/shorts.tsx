@@ -7,7 +7,7 @@ export function meta ({ }: Route.MetaArgs) {
   ]
 }
 
-export default function shorts () {
+export default function Shorts () {
   return (
     <div>Shorts</div>
   )

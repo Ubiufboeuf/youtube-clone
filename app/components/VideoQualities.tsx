@@ -2,10 +2,10 @@ import { v4 as uuidv4 } from 'uuid'
 import type { Video } from '@/env'
 import { useRef, useState, type ChangeEvent } from 'react'
 
-export function VideoOptions ({ videoInfo }: { videoInfo: Video }) {
-  const [optionSelected, setOptionSelected] = useState(videoInfo.selectedOption)
+export function VideoQualities ({ videoInfo }: { videoInfo: Video }) {
+  const [optionSelected, setOptionSelected] = useState(videoInfo.selectedQuality)
   const optionsWrapperRef = useRef<HTMLDivElement>(null)
-  const options = videoInfo.availableOptions
+  const options = videoInfo.qualities
 
   function handleSelectOption (event: ChangeEvent<HTMLInputElement>) {
     const { target } = event

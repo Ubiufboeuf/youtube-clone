@@ -5,11 +5,13 @@ export type Video = {
   creatorId: string
   title: string
   views: number
-  publicationDateTime: string
-  posters: string[]
-  availableOptions: string[]
-  selectedOption: string,
+  publicationDate: string
+  poster: string
+  background?: string
+  qualities: string[]
+  selectedQuality: string,
   description: string
+  source: string
 }
 
 type AvailableOptions = 'audio_only' | '144p' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p'
@@ -22,6 +24,7 @@ export type Creator = {
   name: string
   verified: boolean | 'music'
   description: string
+  avatar: string
   links: {
     name: string
     link: string

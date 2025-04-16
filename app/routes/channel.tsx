@@ -1,18 +1,24 @@
-import { Navigate } from 'react-router'
+// import { Navigate } from 'react-router'
 
-export default function channel () {
-  const url = new URL(window.location.href)
-  const usp = url.pathname.split('/@')
-  const channelId = usp?.[1]
-  
-  if (
-    usp.length === 1 ||
-    !channelId ||
-    channelId.includes('/') ||
-    channelId.includes('@')
-  ) return <Navigate to='/404' />
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
+
+export default function Channel () {
+  const [channelId, setChannelId] = useState<string>('')
+  const location = useLocation()
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const channelId = searchParams.get('id')
+    console.log(searchParams, channelId)
+    setChannelId(channelId ?? '')
+  }, [])
 
   return (
-    `channel: ${channelId}`
+    channelId ? (
+      `channel: ${channelId}`
+    ) : (
+      'No se especificó la id del canal'
+    )
   )
 }

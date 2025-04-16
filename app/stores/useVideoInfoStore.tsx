@@ -26,9 +26,9 @@ export const useVideoInfoStore = create<VideoStore>((set) => ({
     title: '',
     views: 0,
     publicationDate: '',
-    posters: [''],
-    availableOptions: [''],
-    selectedOption: '',
+    poster: '',
+    qualities: [''],
+    selectedQuality: '',
     description: ''
   },
   updateVideoInfo: (newVideoInfo) => set({ videoInfo: newVideoInfo })

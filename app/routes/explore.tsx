@@ -7,7 +7,7 @@ export function meta ({ }: Route.MetaArgs) {
   ]
 }
 
-export default function explore () {
+export default function Explore () {
   return (
     <span>Explorar</span>
   )

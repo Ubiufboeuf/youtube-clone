@@ -2,33 +2,31 @@ import type { Creator, Video } from '@/env'
 import { parseViews, parsePublicationDate, parseDuration } from '@/lib/utils'
 import { IconChannelVerified } from './Icons'
 import { Link, useNavigate } from 'react-router'
-import { getCreatorById, serverURL } from '@/lib/api'
-import { useEffect, useState, type ChangeEvent } from 'react'
-import { creators } from '@/mocks'
+import { getCreatorById } from '@/lib/api'
+import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
-import { useSearchParams } from 'react-router'
 
 export default function VideoCard ({ video }: { video: Video }) {
   const [creator, setCreator] = useState<Creator>()
   const parsedViews = parseViews(video.views)
   const parsedDuration = parseDuration(video.duration)
-  const parsedPublicationDate = video.publicationDateTime && parsePublicationDate(video.publicationDateTime)
+  const parsedPublicationDate = video.publicationDate && parsePublicationDate(video.publicationDate)
 
-  const searchParams = useSearchParams()
   const navigate = useNavigate()
   const updateVideoId = useSearchParamsStore(state => state.updateVideoId)
   
   useEffect(() => {
-    getCreator()
+    updateCreator()
   }, [])
 
-  async function getCreator () {
-    // const creator = await getCreatorById(video.creatorId)
-    const creator = creators.find(c => c.id === video.creatorId)
-    setCreator(creator)
+  async function updateCreator () {
+    const res = await getCreatorById(video.creatorId)
+    if (typeof res === 'string') {
+      return
+    }
+    setCreator(res)
   }
   
-
   return (
     <article className='cardWrapper relative'>
       <button role='link' className='videoCard h-fit w-full cursor-pointer items-start flex flex-col' onClick={() => {
@@ -37,7 +35,7 @@ export default function VideoCard ({ video }: { video: Video }) {
       }}>
         <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700'>
-            { video.posters.length > 0 && <img className='h-full w-full object-cover flex pointer-events-none select-none' src={`${serverURL}/poster/${video.id}`} alt={video.title} /> }
+            { video.id && <img className='h-full w-full object-cover flex pointer-events-none select-none' src={video.poster} alt={video.title} /> }
           </div>
           <time className='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
           <div className='w-full h-1 absolute bottom-0 bg-[#666a]' style={{display: video.timeSeen ? 'block' : 'none'}}>
@@ -76,11 +74,12 @@ export default function VideoCard ({ video }: { video: Video }) {
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
           <Link to='/@ooo0eve0ooo' className='absolute top-0 ms:left-0 left-3 size-10 aspect-square flex items-center justify-start mt-3 pointer-events-auto'>
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
-              <img
-                src={`${serverURL}/avatar/${creator?.id}`} alt={creator?.id}
-                onError={(e) => {e.currentTarget.style.display = 'none}'}}
-                className='size-full'
-              />
+              { creator?.id && <img
+                  src={creator.avatar} alt={creator.id}
+                  onError={(e) => {e.currentTarget.style.display = 'none}'}}
+                  className='size-full'
+                />
+              }
             </div>
           </Link>
           <div className='flex-1 h-fit'>

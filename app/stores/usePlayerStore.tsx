@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type playerStore = {
+type PlayerStore = {
   currentTime: number | undefined
   duration: number | undefined
   paused: boolean | undefined
@@ -9,7 +9,7 @@ type playerStore = {
   updatePaused: (by: boolean) => void
 }
 
-export const usePlayerStore = create<playerStore>((set) => ({
+export const usePlayerStore = create<PlayerStore>((set) => ({
   currentTime: undefined,
   duration: 0,
   paused: undefined,

@@ -1,24 +1,50 @@
-import { useRef } from 'react'
+import { useEffect, useRef, type ChangeEvent, type FormEvent, type MouseEvent } from 'react'
 import { IconMic, IconSearch, IconClose } from '@/components/Icons'
+import { useLocation, useNavigate } from 'react-router'
 
 export default function HeaderCenter () {
   const searchValueRef = useRef('')
   const inputRef = useRef<HTMLInputElement>(null)
   const clearInputRef = useRef<HTMLButtonElement>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const paramSearchRef = useRef('')
 
-  function handleInput (event: React.ChangeEvent<HTMLInputElement>) {
-    if (!event.target) return
-    const { value } = event.target
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const search = params.get('search')
+    if (search?.trim() === '' || search == null) {
+      navigate('/')
+      return
+    }
+    updateSearch(encodeURIComponent(search))
+  }, [])
+
+  function updateSearch (newValue?: string | null) {
+    const value = newValue ?? ''
+    if (inputRef.current && inputRef.current.value !== value) {
+      inputRef.current.value = value
+    }
     searchValueRef.current = value
     checkVisibility(value)
   }
 
-  function checkVisibility (value: string) {
-    clearInputRef.current!.hidden = value ? !value : !searchValueRef.current // Si no hay valor es hidden, sino es visible
+  function handleInput (event: ChangeEvent<HTMLInputElement>) {
+    if (!event.target) return
+    const { value } = event.target
+    updateSearch(value)
   }
 
-  function clearInput () {
+  function checkVisibility (value: string) {
+    if (clearInputRef.current) {
+      clearInputRef.current.hidden = value ? !value : !searchValueRef.current // Si no hay valor es hidden, sino es visible
+    }
+  }
+
+  function clearInput (event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
     if (inputRef.current) {
+      console.log('lolol')
       inputRef.current.value = ''
       searchValueRef.current = ''
       inputRef.current.focus()
@@ -26,9 +52,12 @@ export default function HeaderCenter () {
     }
   }
 
-  function handleSubmit (event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit (event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    checkVisibility('')
+    const params = new URLSearchParams(location?.search)
+    paramSearchRef!.current = params.get('search') ?? ''
+    if (paramSearchRef.current === searchValueRef.current || !searchValueRef.current) return
+    navigate(`/results?search=${encodeURIComponent(searchValueRef.current)}`)
   }
 
   return (
@@ -36,9 +65,9 @@ export default function HeaderCenter () {
       <div className='flex w-full max-w-xl relative h-10'>
         <form
           onSubmit={handleSubmit}
-          className='h-full max-w-full w-full rounded-full px-2 border-[1px] border-[#6666] bg-[#121212] text-base align-middle focus-within:border-[#1C62B9] focus:outline-0 cursor-text flex items-center justify-between relative hover:transition-colors [&:focus-within>#searchIconLeft]:flex'
+          className='h-full max-w-full w-full rounded-full border-[1px] border-[#6666] bg-[#121212] overflow-hidden text-base align-middle focus-within:border-[#1C62B9] focus:outline-0 cursor-text flex items-center justify-between relative hover:transition-colors [&:focus-within>#searchIconLeft]:flex'
         >
-          <div className='h-full aspect-square flex items-center justify-center'>
+          <div className='h-full aspect-[1.4/1] flex items-center justify-center'>
             <div className='size-6 flex items-center justify-center opacity-50'>
               <IconSearch />
             </div>
@@ -47,15 +76,21 @@ export default function HeaderCenter () {
             id='search-bar'
             ref={inputRef}
             placeholder='Buscar'
-            className='h-full w-full max-w-full bg-transparent focus:outline-0 placeholder:text-neutral-500'
+            className='h-full w-full max-w-full px-1 bg-transparent focus:outline-0 placeholder:text-neutral-500'
             onInput={handleInput}
           />
-          <button id='clear-input-btn' className='ml-2 h-full hover:bg-[#6666] flex items-center justify-center rounded-full aspect-square' ref={clearInputRef} hidden onClick={clearInput}>
+          <button
+            id='clear-input-btn'
+            className='h-full hover:bg-[#6666] cursor-pointer transition-colors flex items-center justify-center rounded-full aspect-square' ref={clearInputRef}
+            hidden
+            onClick={clearInput}
+            type='button'
+          >
             <div className='size-6 flex items-center justify-center opacity-50'>
               <IconClose />
             </div>
           </button>
-          <button id='search-by-voice' className='rounded-full h-full hover:bg-[#6666] aspect-square flex items-center justify-center'>
+          <button id='search-by-voice' className='rounded-full h-full cursor-pointer hover:bg-[#6666] transition-colors aspect-[1.4/1] flex items-center justify-center'>
             <div className='size-6 flex items-center justify-center opacity-50'>
               <IconMic />
             </div>

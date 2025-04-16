@@ -6,7 +6,6 @@
 }
 
 @theme {
-  --font-sans: Roboto, "Inter", ui-sans-serif, system-ui, sans-serif;
   --color-primary-dark: #0F0F0F;
   --color-primary-content-darK: white;
   
@@ -23,6 +22,10 @@
   --color-red-btn: color-mix(in srgb, white 20%, black 20%, #FF325B);
   --color-red-light: #FFAABB;
   --color-bg-selected: #FFAABB24;
+}
+
+:root {
+  font-family: Roboto, "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 *,

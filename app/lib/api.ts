@@ -1,61 +1,65 @@
 import type { Creator, Video } from '@/env'
-import { creators, videos } from '@/mocks'
-export const serverURL = 'http://192.168.1.4:1234'
-// import type { Row } from '@libsql/client'
+const SERVER_URL = 'http://192.168.1.4:1234'
+export const VIDEO_ENDPOINT = `${SERVER_URL}/video` // de acá se trae el video, el stream de datos
+export const DATA_ENDPOINT = `${SERVER_URL}/data` // endpoint de información, ej: info de un video o creador
+export const ERROR_ENDPOINT = `${SERVER_URL}/error`
 
-// async function createVideoByRow (row: Row): Promise<Video> {
-// //   return {
-// //     id: row?.id?.toString() ?? '',
-// //     duration: Number(row?.duration),
-// //     timeSeen: Number(row?.timeSeen),
-// //     creatorId: '',
-// //     title: row?.title?.toString() ?? '',
-// //     views: Number(row?.views),
-// //     publicationDate: row?.publicationDateTime?.toString() ?? '',
-// //     poster: row?.videoPoster?.toString() ?? '',
-// //     sources: {
-      
-// //     },
-// //     description: ''
-// //   }
-// // }
-
-// async function createCreatorByRow (row: Row): Promise<Creator> {
-//   return {
-//     id: row.id?.toString() ?? '',
-//     creationDate: row.creationDate?.toString() ?? '',
-//     creatorAvatar: row.creatorAvatar?.toString() ?? '',
-//     name: row.name?.toString() ?? '',
-//     verified: Boolean(row.verified)
-//   }
-// }
-
-export async function getAllVideos () {
-  // const { rows } = await db.execute('SELECT * FROM video')
-  // const videos: Video[] = []
-  // rows.forEach(async (row) => {
-  //   videos.push(await createVideoByRow(row))
-  // })
-  // return videos
-  return videos
+function sendErrorToServer (error: string | Error) {
+  fetch(ERROR_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify({ error }, null, 2)
+  })
 }
 
-export async function getVideoById (id: string): Promise<Video | undefined> {
-  // const row = (await db.execute({
-  //   sql: 'SELECT * FROM video WHERE id = ?',
-  //   args: [id]
-  // })).rows[0]
-
-  // return await createVideoByRow(row)
-  return videos.find(m => m.id === id)
+export function getAllVideos ({ from = 0, to = 0 }: { from: number, to: number }): Promise<Video[]> {
+  return new Promise((resolve, reject) => {
+    fetch(`${DATA_ENDPOINT}/videos?range=${from}_${to}`)
+      .then(res => res.json())
+      .catch(err => {
+        sendErrorToServer(err)
+        reject('Error consiguiendo los videos')
+      })
+      .then(data => {
+        console.log('data:', data)
+        if (!data.success) {
+          reject(data.msg)
+          return
+        }
+        const videos: Video[] = data.videos
+        console.log('videos')
+        resolve(videos)
+      })
+      .catch(err => {
+        sendErrorToServer(err)
+        reject('Error formando los videos')
+      })
+  })
 }
 
-export async function getCreatorById (id: string): Promise<Creator | undefined> {
-  // const row = (await db.execute({
-  //   sql: 'SELECT * FROM creator WHERE id = ?',
-  //   args: [id]
-  // })).rows[0]
+export function getCreatorById (id: string): Promise<Creator> {
+  return new Promise((resolve, reject) => {
+    if (!id) reject('Falta especificar la id del creador')
+    fetch(`${DATA_ENDPOINT}/creator?id=${id}`)
+      .then(res => res.json())
+      .catch(err => {
+        sendErrorToServer(err)
+        reject('Error consiguiendo la información del creador')
+      })
+      .then(data => {
+        const creator = data.creator
+        console.log('creator:', creator)
+        resolve(creator)
+      })
+      .catch(err => {
+        sendErrorToServer(err)
+        reject('Error formando la información del creador')
+      })
+  })
+}
 
-  // return await createCreatorByRow(row)
-  return creators.find(c => c.id === id)
+export function getVideoById (id: string): Promise<Video> {
+  return new Promise((resolve, reject) => {
+    if (!id) reject('Falta especificar la id del video')
+    fetch(`${DATA_ENDPOINT}/video?id=${id}`)
+  })
 }
