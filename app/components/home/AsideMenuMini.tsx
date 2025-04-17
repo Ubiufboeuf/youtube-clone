@@ -28,7 +28,6 @@ const itemsAside: ItemAside[][] = [
   ]
 ]
 
-
 export function AsideMenuMini () {
   const [pathname, setPathname] = useState<string>('')
   const location = useLocationStore((state) => state.location)

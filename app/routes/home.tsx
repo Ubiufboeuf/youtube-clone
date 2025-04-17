@@ -1,30 +1,37 @@
 import { HomeNav } from '@/components/home/HomeNav'
 import VideoCardFallback from '@/components/VideoCardFallback'
 import VideoCard from '@/components/VideoCard'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getAllVideos } from '@/lib/api'
 import { v4 as uuidv4 } from 'uuid'
 // import { useVideosListStore } from '@/stores/useVideosListStore'
-import { Link } from 'react-router'
-import type { Video } from '@/env'
+import { Link, useLoaderData } from 'react-router'
+import { AsideMenuMini } from '@/components/home/AsideMenuMini'
+
+export async function clientLoader() {
+  const videos = await getAllVideos({ to: 40 })
+  return videos
+}
 
 export default function Home () {
-  const [videosSugeridos, setVideosSugeridos] = useState<Video[]>([])
+  // const [videosSugeridos, setVideosSugeridos] = useState<Video[]>([])
+  const videosSugeridos = useLoaderData<typeof clientLoader>()
 
   useEffect(() => {
     updateVideosSugeridos()
   }, [])
 
   async function updateVideosSugeridos () {
-    getAllVideos({ from: videosSugeridos?.length || 0, to: (videosSugeridos?.length || 0) + 60 })
-      .catch((error) => console.error(error))
-      .then(newVideos => {
-        setVideosSugeridos([...videosSugeridos, ...newVideos || []])
-      })
+    // getAllVideos({ from: videosSugeridos?.length || 0, to: (videosSugeridos?.length || 0) + 60 })
+    //   .catch((error) => console.error(error))
+    //   .then(newVideos => {
+    //     // setVideosSugeridos([...videosSugeridos, ...newVideos || []])
+    //   })
   }
 
   return (
     <>
+      <AsideMenuMini />
       <HomeNav />
       <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-[var(--nav-width)]'>
         { videosSugeridos?.length === 0 ? (

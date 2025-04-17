@@ -1,8 +1,7 @@
-import type { Creator, Video } from '@/env'
-const SERVER_URL = 'http://192.168.1.4:1234'
-export const VIDEO_ENDPOINT = `${SERVER_URL}/video` // de acá se trae el video, el stream de datos
-export const DATA_ENDPOINT = `${SERVER_URL}/data` // endpoint de información, ej: info de un video o creador
-export const ERROR_ENDPOINT = `${SERVER_URL}/error`
+import type { Creator, Video, VideoFromServer } from '@/env'
+import { formVideo } from './Video'
+import { DATA_ENDPOINT, ERROR_ENDPOINT } from './constants'
+
 
 function sendErrorToServer (error: string | Error) {
   fetch(ERROR_ENDPOINT, {
@@ -11,7 +10,7 @@ function sendErrorToServer (error: string | Error) {
   })
 }
 
-export function getAllVideos ({ from = 0, to = 0 }: { from: number, to: number }): Promise<Video[]> {
+export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number }): Promise<Video[]> {
   return new Promise((resolve, reject) => {
     fetch(`${DATA_ENDPOINT}/videos?range=${from}_${to}`)
       .then(res => res.json())
@@ -20,13 +19,11 @@ export function getAllVideos ({ from = 0, to = 0 }: { from: number, to: number }
         reject('Error consiguiendo los videos')
       })
       .then(data => {
-        console.log('data:', data)
-        if (!data.success) {
-          reject(data.msg)
-          return
-        }
-        const videos: Video[] = data.videos
-        console.log('videos')
+        if (!data.success) return reject(data.msg)
+        const videos: Video[] = []
+        data.videos.forEach((video: VideoFromServer) => {
+          videos.push(formVideo(video))
+        })
         resolve(videos)
       })
       .catch(err => {
@@ -47,7 +44,7 @@ export function getCreatorById (id: string): Promise<Creator> {
       })
       .then(data => {
         const creator = data.creator
-        console.log('creator:', creator)
+        // console.log('creator:', creator)
         resolve(creator)
       })
       .catch(err => {
@@ -61,5 +58,15 @@ export function getVideoById (id: string): Promise<Video> {
   return new Promise((resolve, reject) => {
     if (!id) reject('Falta especificar la id del video')
     fetch(`${DATA_ENDPOINT}/video?id=${id}`)
+      .then(res => res.json())
+      .then(({ success, status, video, msg }: { success: boolean, status: number, video: VideoFromServer, msg?: string }) => {
+        if (success) {
+          resolve(formVideo(video))
+        } else if (status === 500) {
+          reject('error interno del servidor')
+        } else {
+          reject(msg)
+        }
+      })
   })
 }

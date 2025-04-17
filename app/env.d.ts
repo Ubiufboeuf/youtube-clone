@@ -1,22 +1,28 @@
 export type Video = {
   id: string
   duration: number
-  timeSeen: number
   creatorId: string
   title: string
   views: number
   publicationDate: string
-  poster: string
+  posters: {[key: string]: string}
   background?: string
   qualities: string[]
-  selectedQuality: string,
   description: string
   source: string
 }
 
-type AvailableOptions = 'audio_only' | '144p' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p'
-type Sources<T> = {
-  [Property in keyof T]: string
+export type VideoFromServer = {
+  id: string
+  duration: number
+  creatorId: string
+  title: string
+  views: number
+  publicationDate: string
+  posters: string[]
+  hasBackground: boolean
+  qualities: string[]
+  description: string
 }
 
 export type Creator = {
@@ -24,7 +30,8 @@ export type Creator = {
   name: string
   verified: boolean | 'music'
   description: string
-  avatar: string
+  avatars: { [key: string]: string }
+  banner?: string
   links: {
     name: string
     link: string
@@ -50,4 +57,20 @@ export type ItemAside = {
   path: string
   type?: string
   Icon: ({ active }: { active?: boolean | undefined }) => JSX.Element
+}
+
+export type AnonimousUser = {
+  id: string
+  type: 'anonimous' | 'user'
+  videosVistos: VideoVisto[]
+  preferedQuality: string
+}
+
+export interface User extends AnonimousUser {
+  name: string
+}
+
+export type VideoVisto = {
+  videoId: string
+  timeSeen: number
 }

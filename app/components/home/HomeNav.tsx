@@ -2,6 +2,7 @@ import { useRef, type ChangeEvent } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { IconMagicFeed } from '../Icons'
 import { useVideosListStore } from '@/stores/useVideosListStore'
+import { user } from '@/lib/mocks'
 
 const TAG_FILTERS = {
   ALL: 'all',
@@ -43,7 +44,7 @@ export function HomeNav () {
   return (
     <nav
       id='homeNav'
-      hidden={!videosList || !videosList.length}
+      hidden={user.type === 'anonimous'}
       className='fixed right-0 [transition:width_250ms_ease] top-14 h-10 flex items-end xs:h-14 py-2 w-full ml:w-[calc(100%-240px)] bg-primary-dark px-6 z-[90]'
     >
       <div className='max-w-full w-full gap-3 flex items-center h-7 xs:h-9 overflow-x-auto [scrollbar-width:none]'>

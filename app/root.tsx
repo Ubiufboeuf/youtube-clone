@@ -12,7 +12,9 @@ import './app.css'
 import Header from './components/Header/Header'
 import { useEffect, useRef, type ChangeEvent } from 'react'
 import { AsideMenu } from './components/home/AsideMenu'
-import { AsideMenuMini } from './components/home/AsideMenuMini'
+import { useUserStore } from './stores/useUserStore'
+import { user as testUser } from './lib/mocks'
+import VideoCardFallback from './components/VideoCardFallback'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', href: '/favicon.png' }
@@ -20,6 +22,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const asideInputRef = useRef<HTMLInputElement>(null)
+  const setUser = useUserStore(state => state.setUser)
 
   function handleAsideInput (event: ChangeEvent<HTMLInputElement>) {
     const { checked } = event.target
@@ -29,8 +32,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const opened = window.localStorage.getItem('asideDefaultOpened')
     if (asideInputRef.current) asideInputRef.current.checked = opened === 'true'
+    setUser(testUser)
   }, [])
-  
+
   return (
     <html lang='es' className='[scrollbar-color:darkgray_transparent]'>
       <head>
@@ -49,7 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
             [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
             ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
-            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:w-[calc(100%-72px)]
+            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu,#watch)]:w-[calc(100%-72px)]
             ml:[&:checked~main>:is(#home,#homeNav)]:ml:w-[var(--nav-width)]
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:absolute
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#closeAsideMenu)]:right-0
@@ -62,13 +66,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Header />
         <main id='main' className='h-fit max-w-full w-full overflow-hidden z-0 pt-14'>
           <AsideMenu />
-          <AsideMenuMini />
           {children}
         </main>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
+  )
+}
+
+export async function loader ({ request }: { request: Request }) {
+  return { url: new URL(request.url) }
+}
+
+export function HydrateFallback ({ loaderData: { url } }: Route.ComponentProps) {
+  const { pathname } = url
+  return (
+    <section
+      id='hydrateFallback'
+      className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-[var(--nav-width)]'
+      hidden={pathname !== '/'}
+    >
+      <div className='min-h-full h-fit w-full max-w-full grid grid-cols-[min(100%,500px)] ms:grid-cols-[repeat(auto-fill,minmax(312px,1fr))] sm:p-6 ms:gap-4 justify-center items-start'>
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+      </div>
+    </section>
   )
 }
 

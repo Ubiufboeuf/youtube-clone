@@ -1,13 +1,16 @@
-import type { Creator, Video } from '@/env'
+import type { Creator, Video, VideoVisto } from '@/env'
 import { parseViews, parsePublicationDate, parseDuration } from '@/lib/utils'
 import { IconChannelVerified } from './Icons'
 import { Link, useNavigate } from 'react-router'
 import { getCreatorById } from '@/lib/api'
 import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
+import { useUserStore } from '@/stores/useUserStore'
 
 export default function VideoCard ({ video }: { video: Video }) {
   const [creator, setCreator] = useState<Creator>()
+  const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
+  const user = useUserStore(state => state.user)
   const parsedViews = parseViews(video.views)
   const parsedDuration = parseDuration(video.duration)
   const parsedPublicationDate = video.publicationDate && parsePublicationDate(video.publicationDate)
@@ -17,6 +20,7 @@ export default function VideoCard ({ video }: { video: Video }) {
   
   useEffect(() => {
     updateCreator()
+    updateUserVideoInfo()
   }, [])
 
   async function updateCreator () {
@@ -26,7 +30,16 @@ export default function VideoCard ({ video }: { video: Video }) {
     }
     setCreator(res)
   }
-  
+
+  function updateUserVideoInfo () {
+    user?.videosVistos.reduce((pre, v) => {
+      if (v.videoId === video.id) {
+        setUserVideoInfo(v)
+      }
+      return pre
+    }, {})
+  }
+
   return (
     <article className='cardWrapper relative'>
       <button role='link' className='videoCard h-fit w-full cursor-pointer items-start flex flex-col' onClick={() => {
@@ -35,12 +48,12 @@ export default function VideoCard ({ video }: { video: Video }) {
       }}>
         <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700'>
-            { video.id && <img className='h-full w-full object-cover flex pointer-events-none select-none' src={video.poster} alt={video.title} /> }
+            { video.id && <img className='h-full w-full object-cover flex pointer-events-none select-none' src={video.posters.hq720} alt={video.title} /> }
           </div>
           <time className='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
-          <div className='w-full h-1 absolute bottom-0 bg-[#666a]' style={{display: video.timeSeen ? 'block' : 'none'}}>
+          <div className='w-full h-1 absolute bottom-0 bg-[#666a]' style={{display: userVideoInfo?.timeSeen ? 'block' : 'none'}}>
             <div className='bg-[#DC2626] h-full rounded-full' style={{
-              width: video.timeSeen ? `calc(100%/(${video.duration}/${video.timeSeen}))` : '0px'
+              width: userVideoInfo?.timeSeen ? `calc(100%/(${video.duration}/${userVideoInfo.timeSeen}))` : '0px'
               }} />
           </div>
         </section>
@@ -72,10 +85,10 @@ export default function VideoCard ({ video }: { video: Video }) {
       <article className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'>
         <section className='w-full aspect-video rounded-xl' />
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
-          <Link to='/@ooo0eve0ooo' className='absolute top-0 ms:left-0 left-3 size-10 aspect-square flex items-center justify-start mt-3 pointer-events-auto'>
+          <Link to='/channel?id=ooo0eve0ooo' className='absolute top-0 ms:left-0 left-3 size-10 aspect-square flex items-center justify-start mt-3 pointer-events-auto'>
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
               { creator?.id && <img
-                  src={creator.avatar} alt={creator.id}
+                  src={creator.avatars.mini} alt={creator.id}
                   onError={(e) => {e.currentTarget.style.display = 'none}'}}
                   className='size-full'
                 />

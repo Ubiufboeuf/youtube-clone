@@ -14,7 +14,6 @@ export default function HeaderCenter () {
     const params = new URLSearchParams(location.search)
     const search = params.get('search')
     if (search?.trim() === '' || search == null) {
-      navigate('/')
       return
     }
     updateSearch(encodeURIComponent(search))
@@ -44,7 +43,6 @@ export default function HeaderCenter () {
   function clearInput (event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     if (inputRef.current) {
-      console.log('lolol')
       inputRef.current.value = ''
       searchValueRef.current = ''
       inputRef.current.focus()
