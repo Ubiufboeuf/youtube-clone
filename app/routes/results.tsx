@@ -1,7 +1,7 @@
-import { useLocationStore } from '@/stores/useLocationStore'
+import { useLocation } from 'react-router'
 
 export default function Results () {
-  const location = useLocationStore((state) => state.location)
+  const location = useLocation()
   return (
     <span>{location?.search}</span>
   )

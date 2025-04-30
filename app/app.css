@@ -13,7 +13,9 @@
   --breakpoint-ms: 703px;
   --breakpoint-xs: 501px;
 
-  --color-gradient: linear-gradient(to right, #FF0033, #F50057);
+  --color-gradient-start: #FF0033;
+  --color-gradient-end: #F50057;
+  --color-gradient: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
   --color-pink-start: color-mix(in srgb, white 30%, #FF0033);
   --color-pink-end: color-mix(in srgb, white 30%, #F50057);
   --color-pink-gradient: linear-gradient(to right, var(--color-pink-start), var(--color-pink-end));
@@ -22,6 +24,7 @@
   --color-red-btn: color-mix(in srgb, white 20%, black 20%, #FF325B);
   --color-red-light: #FFAABB;
   --color-bg-selected: #FFAABB24;
+  --color-link: #51a2ff;
 }
 
 :root {
@@ -52,4 +55,12 @@ html {
   width: 100%;
   margin: 0;
   scrollbar-gutter: stable;
+}
+
+h1 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }

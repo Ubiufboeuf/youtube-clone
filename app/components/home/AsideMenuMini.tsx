@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 import { IconCollections, IconExplore, IconHistory, IconHome, IconLikedVideos, IconPlaylists, IconQuestionMark, IconShorts, IconSubscriptions, IconTV, IconWatchLater } from '../Icons'
 import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
-import { useLocationStore } from '@/stores/useLocationStore'
 import type { ItemAside } from '@/env'
+import { useLocation } from 'react-router'
 
 const itemsAside: ItemAside[][] = [
   [
@@ -30,7 +30,7 @@ const itemsAside: ItemAside[][] = [
 
 export function AsideMenuMini () {
   const [pathname, setPathname] = useState<string>('')
-  const location = useLocationStore((state) => state.location)
+  const location = useLocation()
 
   useEffect(() => {
     if (!location) return

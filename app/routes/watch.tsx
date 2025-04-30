@@ -1,7 +1,7 @@
 import { title } from '@/lib/utils'
 import type { Route } from './+types/watch'
 import { useEffect, useState } from 'react'
-import { getAllVideos } from '@/lib/api'
+import { getAllVideos, getVideoById } from '@/lib/api'
 import type { Video } from '@/env'
 import { VideoInfoFallback } from '@/components/watch/VideoInfoFallback'
 import { VideoInfo } from '@/components/watch/VideoInfo'
@@ -9,6 +9,7 @@ import VideoCard from '@/components/VideoCard'
 import { Player } from '@/components/Player'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
 import { v4 as uuidv4 } from 'uuid'
+import { useLocation } from 'react-router'
 
 export function meta ({ }: Route.MetaArgs) {
   return [
@@ -18,18 +19,33 @@ export function meta ({ }: Route.MetaArgs) {
 
 export async function clientLoader () {
   await import('dashjs')
+  return await getAllVideos({ from: 0, to: 20 })
+    
 }
 
-export default function Watch () {
-  const [videosList, setVideosList] = useState<Video[]>()
+export default function Watch ({ loaderData }: Route.ComponentProps) {
+  const [videosList] = useState<Video[]>(loaderData)
   const videoInfo = useVideoInfoStore((state) => state.videoInfo)
+  const updateVideoInfo = useVideoInfoStore((state) => state.updateVideoInfo)
+  const location = useLocation()
 
   useEffect(() => {
-    getRecommendedVideos()
+    getVideoInfo()
   }, [])
 
-  async function getRecommendedVideos () {
-    setVideosList(await getAllVideos({ from: 0, to: 20 }))
+  async function getVideoInfo () {
+    const search = new URLSearchParams(location.search)
+    const id = search.get('v')
+    if (id) {
+      try {
+        const video = await getVideoById(id)
+        if (video) {
+          updateVideoInfo(video)
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
   }
 
   return (

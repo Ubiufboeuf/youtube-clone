@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
 import { v4 as uuidv4 } from 'uuid'
-import { Link } from 'react-router'
-import { IconCollections, IconExplore, IconHistory, IconHome, IconLikedVideos, IconPlaylists, IconShorts, IconSubscriptions, IconTV, IconWatchLater } from '../Icons'
-import { MenuLink } from '../AsideNavigation/MenuLink'
+import { Link, useLocation } from 'react-router'
+import { IconCollections, IconExplore, IconHistory, IconHome, IconLikedVideos, IconPlaylists, IconShorts, IconSubscriptions, IconTV, IconWatchLater } from '@/components/Icons'
+import { MenuLink } from '@/components/AsideNavigation/MenuLink'
 import { useEffect, useRef, useState } from 'react'
-import { MenuExpandableLink } from '../AsideNavigation/MenuExpandableLink'
+import { MenuExpandableLink } from '@/components/AsideNavigation/MenuExpandableLink'
 import type { ItemAside } from '@/env'
-import { useLocationStore } from '@/stores/useLocationStore'
 
 const itemsAside: ItemAside[][] = [
   [
@@ -29,7 +28,7 @@ const itemsAside: ItemAside[][] = [
 
 export function AsideMenu () {
   const [path, setPath] = useState<string>('')
-  const location = useLocationStore((state) => state.location)
+  const location = useLocation()
   const asideMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

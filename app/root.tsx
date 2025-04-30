@@ -64,7 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           onInput={handleAsideInput}
         />
         <Header />
-        <main id='main' className='h-fit max-w-full w-full overflow-hidden z-0 pt-14'>
+        <main id='main' className='h-fit max-w-full w-full overflow-hidden pt-14'>
           <AsideMenu />
           {children}
         </main>

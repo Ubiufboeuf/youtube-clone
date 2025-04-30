@@ -4,3 +4,5 @@ export const DATA_ENDPOINT = `${SERVER_URL}/data` // endpoint de información, e
 export const BACKGROUND_ENDPOINT = `${SERVER_URL}/background`
 export const POSTER_ENDPOINT = `${SERVER_URL}/poster`
 export const ERROR_ENDPOINT = `${SERVER_URL}/error`
+
+export const DATA_VIDEO_ENDPOINT = `${DATA_ENDPOINT}/video` // endpoint de información, ej: info de un video o creador

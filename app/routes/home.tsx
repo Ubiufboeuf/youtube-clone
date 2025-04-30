@@ -1,5 +1,4 @@
 import { HomeNav } from '@/components/home/HomeNav'
-import VideoCardFallback from '@/components/VideoCardFallback'
 import VideoCard from '@/components/VideoCard'
 import { useEffect } from 'react'
 import { getAllVideos } from '@/lib/api'
@@ -7,10 +6,16 @@ import { v4 as uuidv4 } from 'uuid'
 // import { useVideosListStore } from '@/stores/useVideosListStore'
 import { Link, useLoaderData } from 'react-router'
 import { AsideMenuMini } from '@/components/home/AsideMenuMini'
+import { user } from '@/lib/mocks'
 
 export async function clientLoader() {
-  const videos = await getAllVideos({ to: 40 })
-  return videos
+  try {
+    const videos = await getAllVideos({ to: 40 })
+    return videos
+  } catch (err) {
+    console.log(err)
+    return []
+  }
 }
 
 export default function Home () {
@@ -34,7 +39,7 @@ export default function Home () {
       <AsideMenuMini />
       <HomeNav />
       <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-[var(--nav-width)]'>
-        { videosSugeridos?.length === 0 ? (
+        { user.type === 'anonimous' ? (
             <div className='fixed left-1/2 top-1/2 [transform:translate(-50%,-50%)] h-fit gap-8 w-124 p-6 bg-neutral-800 border-[1px] border-neutral-600 rounded-xl flex flex-col items-center justify-between'>
               <h1 className='text-2xl font-bold text-center'>¡Bienvenido a YouTube!</h1>
               <p className='-mt-2 text-center'>Acá podrás encontrar
@@ -51,32 +56,21 @@ export default function Home () {
                 <strong>¡animate a hacer tu primera búsqueda!</strong>
               </span>
             </div>
+          ) : videosSugeridos.length === 0 ? (
+            <div className='h-full w-full flex items-center justify-center flex-col gap-4'>
+              <h1 className='text-2xl font-bold'>Hubo un error consiguiendo los videos</h1>
+              <p className='w-112'>
+                Si recargar la página no soluciona el error ponte en contacto con el
+                <a href='#lol' className='text-blue-400'> soporte técnico </a>
+                para solucionar el problema.
+              </p>
+            </div>
           ) : (
             <div className='min-h-full h-fit w-full max-w-full grid grid-cols-[min(100%,500px)] ms:grid-cols-[repeat(auto-fill,minmax(312px,1fr))] sm:p-6 ms:gap-4 justify-center items-start'>
               {
-                videosSugeridos.map(video => {
-                  return (
-                    <VideoCard key={uuidv4()} video={video} />
-                  )
-                })
+                videosSugeridos.map(video => <VideoCard key={uuidv4()} video={video} />)
               }
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-              <VideoCardFallback />
-            </div>   
+            </div>
           )
         }
       </section>
