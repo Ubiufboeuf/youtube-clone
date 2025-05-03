@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
-export default function VideoCard ({ video }: { video: Video }) {
+export default function VideoCard ({ video, className = '' }: { video: Video, className?: string }) {
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
   const user = useUserStore(state => state.user)
@@ -41,7 +41,7 @@ export default function VideoCard ({ video }: { video: Video }) {
   }
 
   return (
-    <article className='cardWrapper relative'>
+    <article className={`${className} cardWrapper relative`}>
       <button role='link' className='videoCard h-fit w-full cursor-pointer items-start flex flex-col' onClick={() => {
         updateVideoId(video.id)
         navigate(`/watch?v=${video.id}`)

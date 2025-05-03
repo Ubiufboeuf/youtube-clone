@@ -52,7 +52,7 @@ export default function Watch ({ loaderData }: Route.ComponentProps) {
     <>
       <div id='watch' className='h-[2000px] w-full'>
         <Player videoInfo={videoInfo} />
-        <section className='w-full h-full min-h-fit flex justify-between max-w-[3840px] mx-auto gap-0'>
+        <section className='w-full h-full min-h-fit flex lg:flex-row flex-col justify-between max-w-[3840px] mx-auto gap-0'>
           <div className='w-full flex-1 h-full min-h-fit px-8 py-6'>
             <header id='videoInfo' className='h-32 min-h-fit w-full bg-neutral-700 rounded-xl px-4 py-3'>
               { videoInfo ? <VideoInfo video={videoInfo} /> : <VideoInfoFallback /> }
@@ -70,14 +70,16 @@ export default function Watch ({ loaderData }: Route.ComponentProps) {
 
             </section>
           </div>
-          <div id='recommendedVideos' className='w-112 h-full min-h-fit'>
-            {
-              videosList?.length && videosList?.length > 0 && (
-                videosList.map(video => {
-                  return <VideoCard key={uuidv4()} video={video} />
-                })
-              )
-            }
+          <div id='recommendedVideos' className='lg:w-112 w-full py-6 h-full min-h-fit flex justify-center'>
+            <div className='w-full xs:max-w-[calc(100%-64px)] grid grid-cols-[repeat(auto-fill,minmax(312px,1fr))] gap-4'>
+              {
+                videosList?.length && videosList?.length > 0 && (
+                  videosList.map(video => {
+                    return <VideoCard key={uuidv4()} video={video} />
+                  })
+                )
+              }
+            </div>
           </div>
         </section>
       </div>

@@ -23,16 +23,16 @@ export default function Home () {
   const videosSugeridos = useLoaderData<typeof clientLoader>()
 
   useEffect(() => {
-    updateVideosSugeridos()
+    // updateVideosSugeridos()
   }, [])
 
-  async function updateVideosSugeridos () {
-    // getAllVideos({ from: videosSugeridos?.length || 0, to: (videosSugeridos?.length || 0) + 60 })
-    //   .catch((error) => console.error(error))
-    //   .then(newVideos => {
-    //     // setVideosSugeridos([...videosSugeridos, ...newVideos || []])
-    //   })
-  }
+  // async function updateVideosSugeridos () {
+  //   getAllVideos({ from: videosSugeridos?.length || 0, to: (videosSugeridos?.length || 0) + 60 })
+  //     .catch((error) => console.error(error))
+  //     .then(newVideos => {
+  //       setVideosSugeridos([...videosSugeridos, ...newVideos || []])
+  //     })
+  // }
 
   return (
     <>
