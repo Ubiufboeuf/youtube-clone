@@ -31,7 +31,7 @@ export default function Home () {
     } else if (videosSugeridos.length === 0) {
       mainContent = () => HomeNoVideos
     } else {
-      mainContent = () => HomeNoVideos
+      mainContent = () => HomeNormal
     }
     setHomeMainContent(mainContent)
   }, [])
