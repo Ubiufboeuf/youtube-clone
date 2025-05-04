@@ -1,5 +1,5 @@
 import { HomeNav } from '@/components/home/HomeNav'
-import { useEffect, useState, type FC, type JSX, type ReactNode } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import { getAllVideos } from '@/lib/api'
 import { useLoaderData } from 'react-router'
 import { AsideMenuMini } from '@/components/home/AsideMenuMini'
