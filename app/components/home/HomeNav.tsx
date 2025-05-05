@@ -58,7 +58,7 @@ export function HomeNav () {
             tags.map(tag => (
               <label
                 key={uuidv4()}
-                className='w-fit min-w-fit h-full xs:px-4 px-3 bg-neutral-700 xs:rounded-lg rounded-md flex [&:has(:checked)]:bg-[#f1f1f1] [&:has(:checked)]:text-primary-dark cursor-pointer [&:has(:checked):hover]:bg-white [&:not(:has(:checked)):hover]:bg-neutral-700'
+                className='w-fit min-w-fit h-full xs:px-4 px-3 bg-neutral-700 xs:rounded-lg rounded-md flex [&:has(:checked)]:bg-[#f1f1f1] [&:has(:checked)]:text-primary-dark cursor-pointer [&:has(:checked):hover]:bg-white [&:not(:has(:checked)):hover]:bg-neutral-600 transition-colors'
               >
                 <input
                   type='checkbox'
