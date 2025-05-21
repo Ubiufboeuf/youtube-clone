@@ -4,6 +4,6 @@ export default function You () {
   const page = usp?.[1]
   
   return (
-    <span>`you-page: ${page}`</span>
+    <span>you-page: {page}</span>
   )
 }

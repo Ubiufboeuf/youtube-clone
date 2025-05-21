@@ -74,7 +74,7 @@ export default function HeaderCenter () {
             id='search-bar'
             ref={inputRef}
             placeholder='Buscar'
-            className='h-full w-full max-w-full px-1 bg-transparent focus:outline-0 placeholder:text-neutral-500'
+            className='h-full w-full max-w-full px-1 bg-transparent focus:outline-0 placeholder:text-neutral-500 placeholder:select-none'
             onInput={handleInput}
           />
           <button

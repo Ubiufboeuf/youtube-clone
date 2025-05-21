@@ -5,7 +5,7 @@ export const MenuLink = ({ name, link, path, children }: { name: string, link: s
   return (
     <Link
       to={link}
-      className={`${link === path ? 'actualPath bg-bg-selected font-medium' : 'hover:bg-neutral-800'} h-10 min-h-10 flex items-center gap-4 px-3 rounded-lg cursor-pointer active:bg-neutral-600 flex-1 w-full`}
+      className={`${link === path ? 'actualPath bg-selected font-medium' : 'hover:bg-neutral-800'} h-10 min-h-10 flex items-center gap-4 px-3 rounded-lg cursor-pointer active:bg-neutral-600 flex-1 w-full`}
     >
       <div
         className='h-6 aspect-square'

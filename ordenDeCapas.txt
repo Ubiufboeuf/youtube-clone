@@ -1,5 +1,6 @@
 Hago esto porque me estoy confundiendo con los z-index
 
+999 - opciones debug, como: Devices
 100 - header, asideMenu
 99 - closeAsideMenu
 98 - asideMenuMini

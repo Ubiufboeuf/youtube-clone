@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
+
+
 export default function VideoCard ({ video, className = '' }: { video: Video, className?: string }) {
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
@@ -41,10 +43,9 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
   }
 
   return (
-    <article className={`${className} cardWrapper relative`}>
-      <button role='link' className='videoCard h-fit w-full cursor-pointer items-start flex flex-col' onClick={() => {
+    <article className={`cardWrapper relative ${className}`}>
+      <Link to={`/watch?v=${video.id}`} className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200' onClick={() => {
         updateVideoId(video.id)
-        navigate(`/watch?v=${video.id}`)
       }}>
         <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700'>
@@ -81,20 +82,24 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
             </div>
           </div>
         </section>
-      </button>
+      </Link>
       <article className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'>
         <section className='w-full aspect-video rounded-xl' />
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
-          <Link to='/channel?id=ooo0eve0ooo' className='absolute top-0 ms:left-0 left-3 size-10 aspect-square flex items-center justify-start mt-3 pointer-events-auto'>
+          <button
+            className='absolute top-0 ms:left-0 left-3 size-10 aspect-square flex items-center justify-start mt-3 pointer-events-auto cursor-pointer'
+            onClick={() => {
+              navigate('/channel?id=ooo0eve0ooo')
+            }}
+          >
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
               { creator?.id && <img
                   src={creator.avatars.mini} alt={creator.id}
-                  onError={(e) => {e.currentTarget.style.display = 'none}'}}
                   className='size-full'
                 />
               }
             </div>
-          </Link>
+          </button>
           <div className='flex-1 h-fit'>
             <div className='w-[90%] h-4 rounded mb-3' />
             <div className='w-[60%] h-4 rounded' />

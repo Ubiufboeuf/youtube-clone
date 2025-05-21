@@ -56,11 +56,11 @@ export function MenuExpandableLink ({ item: { Icon, name, path }, path: pathname
       <div className='absolute w-full h-10 flex justify-between gap-2 items-center'>
         <Link
           to={path}
-          className={`${path === pathname ? 'actualPath bg-bg-selected font-medium' : 'hover:bg-neutral-800'}
+          className={`${path === pathname ? 'actualPath bg-selected font-medium' : 'hover:bg-neutral-800'}
             flex-1 max-w-[204px] h-10 min-h-10 flex items-center gap-4 px-3 rounded-lg cursor-pointer active:bg-neutral-600`
           }
         >
-          <div>
+          <div className='size-6 max-h-full aspect-square overflow-hidden'>
             <Icon active={path === pathname} />
           </div>
           <span>{name}</span>
@@ -76,8 +76,10 @@ export function MenuExpandableLink ({ item: { Icon, name, path }, path: pathname
         <div className='w-full h-10' />
         {
           subItems?.map(sub => (
-            <Link key={uuidv4()} to={sub.link} className='w-full h-10 flex items-center px-3 gap-6 hover:bg-neutral-800 rounded-lg'>
-              { sub.Icon && <Icon /> }
+            <Link key={uuidv4()} to={sub.link} className='w-full h-10 flex items-center px-3 gap-4 hover:bg-neutral-800 rounded-lg'>
+              <div className='size-6 max-h-full aspect-square overflow-hidden'>
+                { sub.Icon && <Icon /> }
+              </div>
               <span>{sub.name}</span>
             </Link>
           ))

@@ -6,8 +6,9 @@
 }
 
 @theme {
-  --color-primary-dark: #0F0F0F;
+  --color-primary-dark: #111111;
   --color-primary-content-darK: white;
+  --color-footer: #1a1a1a;
   
   --breakpoint-ml: 792px;
   --breakpoint-ms: 703px;
@@ -23,8 +24,33 @@
   --color-red-bg: color-mix(in srgb, white 6%, #FF0033 6%);
   --color-red-btn: color-mix(in srgb, white 20%, black 20%, #FF325B);
   --color-red-light: #FFAABB;
-  --color-bg-selected: #FFAABB24;
+  --color-selected: #FFAABB24;
+  --color-unselected: #B8B8B8;
   --color-link: #51a2ff;
+}
+
+@custom-variant touch {
+  @media (pointer: coarse) {
+    @slot;
+  }
+}
+
+@custom-variant mobile {
+  &:where(.is-mobile-ua *) {
+    @slot;
+  }
+}
+
+@custom-variant tablet {
+  &:where(.is-tablet-ua *) {
+    @slot;
+  }
+}
+
+@custom-variant laptop {
+  &:where(.is-laptop-ua *) {
+    @slot;
+  }
 }
 
 :root {
@@ -43,18 +69,17 @@
 
 html,
 body {
+  height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0;
+
   @apply bg-white dark:bg-primary-dark;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
-}
-
-html {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  scrollbar-gutter: stable;
 }
 
 h1 {

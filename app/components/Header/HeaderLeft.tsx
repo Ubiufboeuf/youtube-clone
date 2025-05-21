@@ -4,7 +4,7 @@ import { IconMenu, IconYouTube } from '../Icons'
 export default function HeaderLeft () {  
   return (
     <section
-      className='flex items-center justify-start gap-4 px-4 h-14 w-full flex-1'
+      className='flex items-center justify-start gap-4 xs:px-4 px-2 h-14 w-full flex-1'
     >
       <label
         id='label-for-checkbox'
