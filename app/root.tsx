@@ -79,7 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             not-mobile:ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
             ml:[&:not(:checked)~main>#homeNav]:w-full
             ml:[&:checked~main>:is(#home,#homeNav)]:w-navbar
-            mobile:ml:[&~main>:is(#home,#homeNav)]:w-full
+            mobile:[&~main>:is(#home,#homeNav)]:w-full
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]
