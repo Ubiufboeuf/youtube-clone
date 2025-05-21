@@ -77,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
             [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
             ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
-            ml:[&:checked~main>:is(#home,#homeNav)]:ml:w-[var(--nav-width)]
+            ml:[&:checked~main>:is(#home,#homeNav)]:w-[var(--nav-width)]
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]

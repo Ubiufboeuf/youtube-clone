@@ -40,7 +40,7 @@ export function AsideMenuMini () {
   return (
     <aside
       id='aside-menu-mini'
-      className='w-18 px-2 gap-2 h-[calc(100%-56px)] hidden not-touch:sm:flex flex-col items-center fixed left-0 bg-primary-dark z-[98] overflow-y-auto [scrollbar-width:none]'
+      className='w-18 px-2 gap-2 h-[calc(100%-56px)] hidden not-mobile:sm:flex flex-col items-center fixed left-0 bg-primary-dark z-[98] overflow-y-auto [scrollbar-width:none]'
     >
       <div className='min-h-fit w-fit h-full pb-1'>
         {
