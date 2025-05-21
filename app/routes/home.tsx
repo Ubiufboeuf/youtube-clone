@@ -42,7 +42,7 @@ export default function Home () {
       <AsideMenuMini />
       <AsideMenuTablet />
       <HomeNav />
-      <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex flex-col h-[calc(100%-112px)] w-full ml:w-[var(--nav-width)]'>
+      <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex flex-col h-[calc(100%-112px)] w-full ml:w-navbar'>
         { videosSugeridos?.length ? <InCaseYouMissed videos={videosSugeridos} /> : null }
         { HomeMainContent && <HomeMainContent videosSugeridos={videosSugeridos} /> }
       </section>

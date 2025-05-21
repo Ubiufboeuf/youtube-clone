@@ -77,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
             [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
             ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
-            ml:[&:checked~main>:is(#home,#homeNav)]:w-[var(--nav-width)]
+            ml:[&:checked~main>:is(#home,#homeNav)]:w-navbar
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]
@@ -111,7 +111,7 @@ export function HydrateFallback ({ loaderData: { url } }: Route.ComponentProps) 
   return (
     <section
       id='hydrateFallback'
-      className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-[var(--nav-width)]'
+      className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-navbar'
       hidden={pathname !== '/'}
     >
       <div className='h-fit w-full max-w-full grid grid-cols-[min(100%,500px)] ms:grid-cols-[repeat(auto-fill,minmax(312px,1fr))] sm:p-6 ms:gap-4 justify-center items-start'>
