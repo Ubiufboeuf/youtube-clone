@@ -80,6 +80,10 @@ body {
   }
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 h1 {
   text-wrap: balance;
 }
