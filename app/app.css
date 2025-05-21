@@ -27,6 +27,8 @@
   --color-selected: #FFAABB24;
   --color-unselected: #B8B8B8;
   --color-link: #51a2ff;
+
+  --container-navbar: calc(100% - 240px);
 }
 
 @custom-variant touch {
@@ -61,10 +63,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-* {
-  --nav-width: calc(100% - 240px);
 }
 
 html,
