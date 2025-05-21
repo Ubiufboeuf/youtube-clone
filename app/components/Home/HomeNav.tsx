@@ -61,6 +61,7 @@ export function HomeNav () {
                 className='w-fit min-w-fit h-full xs:px-3.5 px-3 bg-neutral-700 xs:rounded-lg rounded-md flex [&:has(:checked)]:bg-[#f1f1f1] [&:has(:checked)]:text-primary-dark cursor-pointer [&:has(:checked):hover]:bg-white [&:not(:has(:checked)):hover]:bg-neutral-600 transition-colors'
               >
                 <input
+                  name={`tag-HomeNav-${uuidv4()}`}
                   type='checkbox'
                   defaultChecked={tag.filter === TAG_FILTERS.ALL}
                   hidden
