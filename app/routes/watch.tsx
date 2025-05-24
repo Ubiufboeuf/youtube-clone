@@ -1,15 +1,14 @@
 import { title } from '@/lib/utils'
 import type { Route } from './+types/watch'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getAllVideos, getVideoById } from '@/lib/api'
 import type { Video } from '@/env'
-import { VideoInfoFallback } from '@/components/watch/VideoInfoFallback'
-import { VideoInfo } from '@/components/watch/VideoInfo'
-import VideoCard from '@/components/VideoCard'
 import { Player } from '@/components/Player'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
-import { v4 as uuidv4 } from 'uuid'
 import { useLocation } from 'react-router'
+import { AsideMenuMini } from '@/components/Home/AsideMenuMini'
+import { AsideRight } from '@/components/watch/AsideRight'
+import { InfoAndComments } from '@/components/watch/InfoAndComments'
 
 export function meta ({ }: Route.MetaArgs) {
   return [
@@ -20,7 +19,7 @@ export function meta ({ }: Route.MetaArgs) {
 export async function clientLoader () {
   await import('dashjs')
   try {
-  return await getAllVideos({ from: 0, to: 20 })
+    return await getAllVideos({ from: 0, to: 20 })
   } catch (err) {
     console.error(err)
     return []
@@ -29,13 +28,34 @@ export async function clientLoader () {
 
 export default function Watch ({ loaderData }: Route.ComponentProps) {
   const [videosList] = useState<Video[]>(loaderData)
+  const [cinemaModeActive, setCinemaModeActive] = useState<boolean>(false)
   const videoInfo = useVideoInfoStore((state) => state.videoInfo)
   const updateVideoInfo = useVideoInfoStore((state) => state.updateVideoInfo)
   const location = useLocation()
+  const watchRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     getVideoInfo()
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp)
+    }
   }, [])
+
+  function handleKeyUp (event: KeyboardEvent) {
+    const { key } = event
+    const lowerKey = key.toLowerCase()
+
+    if ((watchRef.current?.contains(document.activeElement) || document.activeElement?.tagName !== 'INPUT') && lowerKey === 't') {
+      toggleCinemaMode()
+    }
+  }
+
+  function toggleCinemaMode () {
+    console.log(cinemaModeActive)
+    setCinemaModeActive(cinemaModeActive => !cinemaModeActive)
+  }
 
   async function getVideoInfo () {
     const search = new URLSearchParams(location.search)
@@ -54,38 +74,18 @@ export default function Watch ({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <div id='watch' className='h-[2000px] w-full'>
-        <Player videoInfo={videoInfo} />
-        <section className='w-full h-full min-h-fit flex lg:flex-row flex-col justify-between max-w-[3840px] mx-auto gap-0'>
-          <div className='w-full flex-1 h-full min-h-fit px-8 py-6'>
-            <header id='videoInfo' className='h-32 min-h-fit w-full bg-neutral-700 rounded-xl px-4 py-3'>
-              { videoInfo ? <VideoInfo video={videoInfo} /> : <VideoInfoFallback /> }
-              {
-                videoInfo?.posters && (
-                  <img
-                    className='h-fit w-full object-cover flex pointer-events-none select-none'
-                    src={videoInfo?.posters.hq720}
-                    alt={videoInfo?.title}
-                  />
-                )
-              }
-            </header>
-            <section id='comments'>
-
-            </section>
-          </div>
-          <div id='recommendedVideos' className='lg:w-112 w-full py-6 h-full min-h-fit flex justify-center'>
-            <div className='w-full xs:max-w-[calc(100%-64px)] grid grid-cols-[repeat(auto-fill,minmax(312px,1fr))] gap-4'>
-              {
-                videosList?.length && videosList?.length > 0 && (
-                  videosList.map(video => {
-                    return <VideoCard key={uuidv4()} video={video} />
-                  })
-                )
-              }
-            </div>
-          </div>
-        </section>
+      <AsideMenuMini />
+      <div
+        id='watch'
+        className={`
+          ${cinemaModeActive ? '' : 'p-4 pb-0'}
+          h-[calc(100%-56px)] min-h-fit absolute right-0 w-full max-w-full grid gap-6 justify-items-center
+        `}
+        ref={watchRef}
+      >
+        <Player cinemaModeActive={cinemaModeActive} videoInfo={videoInfo} />
+        <AsideRight videos={videosList} cinemaModeActive={cinemaModeActive} />
+        <InfoAndComments />
       </div>
     </>
   )
