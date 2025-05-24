@@ -19,7 +19,8 @@ import { Footer } from './components/Footer'
 import { Devices } from './components/test/devices'
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'icon', href: '/favicon.png' }
+  { rel: 'icon', href: '/favicon.png' },
+  { rel: 'preload', href: '/Roboto.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' }
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
