@@ -1,6 +1,6 @@
 import type { Creator, Video, VideoVisto } from '@/env'
 import { parseViews, parsePublicationDate, parseDuration } from '@/lib/utils'
-import { IconChannelVerified } from './Icons'
+import { IconChannelVerified, IconDots } from './Icons'
 import { Link, useNavigate } from 'react-router'
 import { getCreatorById } from '@/lib/api'
 import { useEffect, useState } from 'react'
@@ -80,6 +80,16 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
                 </>
               )}
             </div>
+          </div>
+          <div className='h-full w-full flex-1 pt-3'>
+            <button
+              className='dots absolute right-0 hover:bg-neutral-800 cursor-pointer rounded-full aspect-square size-9 flex items-center justify-center'
+              onClick={(e) => e.preventDefault()}
+            >
+              <div className='size-5 overflow-hidden flex items-center justify-center pointer-events-none'>
+                <IconDots />
+              </div>
+            </button>
           </div>
         </section>
       </Link>
