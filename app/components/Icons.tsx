@@ -276,7 +276,7 @@ export const IconTV = ({ active = false }: { active?: boolean }) => {
   }
 }
 
-export const IconCollections = ({ active = false}: { active?: boolean }) => {
+export const IconCollections = ({ active = false }: { active?: boolean }) => {
   if (active) {
     return (
       <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-full w-full pointer-events-none'>
@@ -292,7 +292,7 @@ export const IconCollections = ({ active = false}: { active?: boolean }) => {
   }
 }
 
-export const IconHistory = ({ active = false}: { active?: boolean }) => {
+export const IconHistory = ({ active = false }: { active?: boolean }) => {
   if (active) {
     return (
       <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-full w-full pointer-events-none'>
@@ -308,7 +308,7 @@ export const IconHistory = ({ active = false}: { active?: boolean }) => {
   }
 }
 
-export const IconLikedVideos = ({ active = false}: { active?: boolean }) => {
+export const IconLikedVideos = ({ active = false }: { active?: boolean }) => {
   if (active) {
     return (
       <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-full w-full pointer-events-none'>
@@ -324,7 +324,7 @@ export const IconLikedVideos = ({ active = false}: { active?: boolean }) => {
   }
 }
 
-export const IconPlaylists = ({ active = false}: { active?: boolean }) => {
+export const IconPlaylists = ({ active = false }: { active?: boolean }) => {
   if (active) {
     return (
       <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-full w-full pointer-events-none'>
@@ -340,7 +340,7 @@ export const IconPlaylists = ({ active = false}: { active?: boolean }) => {
   }
 }
 
-export const IconWatchLater = ({ active = false}: { active?: boolean }) => {
+export const IconWatchLater = ({ active = false }: { active?: boolean }) => {
   if (active) {
     return (
       <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-full w-full pointer-events-none'>
