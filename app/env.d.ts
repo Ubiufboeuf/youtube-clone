@@ -1,29 +1,47 @@
-export type Video = {
+export interface VideoFromServer extends object {
   id: string
-  duration: number
-  creatorId: string
   title: string
-  views: number
-  publicationDate: string
-  posters: {[key: string]: string}
-  background?: string
-  qualities: string[]
   description: string
+  channel_id: string
+  channel_url: string
+  duration: number
+  view_count: number
+  webpage_url: string
+  categories: string[]
+  tags: string[]
+  like_count: number
+  is_live: boolean
+  was_live: boolean
+  release_datestring: string
+  availability: string
+  uploader: string
+  uploader_id: `@${string}`
+  uploader_url: `${string}@${string}`
+  language: string
+  thumbnails: Thumbnail[]
+  thumbnail: string
+  minimalThumbnail: string
+  formats: Format[]
+  release_timestamp: number
+}
+
+export interface Video extends VideoFromServer {
   source: string
 }
 
-export type VideoFromServer = {
-  id: string
-  duration: number
-  creatorId: string
-  title: string
-  views: number
-  publicationDate: string
-  posters: string[]
-  hasBackground: boolean
-  qualities: string[]
-  description: string
-}
+// export type Video = {
+//   id: string
+//   duration: number
+//   creatorId: string
+//   title: string
+//   views: number
+//   publicationDate: string
+//   posters: {[key: string]: string}
+//   background?: string
+//   qualities: string[]
+//   description: string
+//   source: string
+// }
 
 export type Creator = {
   id: string
@@ -73,4 +91,22 @@ export interface User extends AnonimousUser {
 export type VideoVisto = {
   videoId: string
   timeSeen: number
+}
+
+export interface Thumbnail {
+  id?: string
+  height?: number
+  width?: number
+  resolution?: `${number}x${number}`
+  url?: string
+}
+
+export interface Format {
+  duration?: number
+  ext?: string
+  type?: 'audio' | 'video'
+  resolution?: string
+  aspect_ratio?: number
+  height?: number
+  width?: number
 }
