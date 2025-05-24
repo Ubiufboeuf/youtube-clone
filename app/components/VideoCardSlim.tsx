@@ -49,7 +49,9 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
         className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
         onClick={() => {
         updateVideoId(video.id)
-      }}>
+        }}
+        title={video.title}
+      >
         <section className='w-full aspect-video bg-black rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700 relative'>
             { video.minimalThumbnail && <img className='h-full w-full object-cover flex pointer-events-none select-none blur' src={video.minimalThumbnail} /> }
