@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
-
-
 export default function VideoCardSlim ({ video, className = '' }: { video: Video, className?: string }) {
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
@@ -48,7 +46,7 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
         to={`/watch?v=${video.id}`}
         className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
         onClick={() => {
-        updateVideoId(video.id)
+          updateVideoId(video.id)
         }}
         title={video.title}
       >
