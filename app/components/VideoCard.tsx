@@ -100,7 +100,7 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
       </Link>
       <article
         className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'
-        title={video.uploader_id ?? ''}
+        title={video.uploader ?? ''}
       >
         <section className='w-full aspect-video rounded-xl' />
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
