@@ -48,8 +48,9 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
         updateVideoId(video.id)
       }}>
         <section className='w-full aspect-video bg-black rounded-xl flex items-end justify-center relative overflow-hidden'>
-          <div className='h-full w-full bg-neutral-700'>
-            { video.id && <img className='h-full w-full object-cover flex pointer-events-none select-none' src={video.posters.hq720} alt={video.title} /> }
+          <div className='h-full w-full bg-neutral-700 relative'>
+            { video.minimalThumbnail && <img className='h-full w-full object-cover flex pointer-events-none select-none blur' src={video.minimalThumbnail} /> }
+            { video.thumbnail && <img className='absolute left-0 top-0 h-full w-full object-cover flex pointer-events-none select-none' loading='lazy' src={video.thumbnail} alt={video.title} /> }
           </div>
           <time className='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
           <div className='w-full h-1 absolute bottom-0 bg-[#666a]' style={{display: userVideoInfo?.timeSeen ? 'block' : 'none'}}>
