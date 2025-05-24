@@ -13,9 +13,9 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
   const user = useUserStore(state => state.user)
-  const parsedViews = parseViews(video.views)
+  const parsedViews = parseViews(video.view_count)
   const parsedDuration = parseDuration(video.duration)
-  const parsedPublicationDate = video.publicationDate && parsePublicationDate(video.publicationDate)
+  const parsedPublicationDate = video.release_datestring && parsePublicationDate(video.release_datestring)
 
   const navigate = useNavigate()
   const updateVideoId = useSearchParamsStore(state => state.updateVideoId)
@@ -26,7 +26,7 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
   }, [])
 
   async function updateCreator () {
-    const res = await getCreatorById(video.creatorId)
+    const res = await getCreatorById(video.uploader_id)
     if (typeof res === 'string') {
       return
     }
@@ -83,7 +83,10 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
           </div>
         </section>
       </Link>
-      <article className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'>
+      <article
+        className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'
+        title={video.uploader_id ?? ''}
+      >
         <section className='w-full aspect-video rounded-xl' />
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
           <button
@@ -93,8 +96,8 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
             }}
           >
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
-              { creator?.id && <img
-                  src={creator.avatars.mini} alt={creator.id}
+              { video?.uploader_id && <img
+                  src={`http://localhost:1234/avatar/${video.uploader_id}`} alt={'a'}
                   className='size-full'
                 />
               }
