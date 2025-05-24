@@ -54,7 +54,6 @@ export function getVideoById (id: string): Promise<Video> {
       .then(({ success, status, video, msg }: { success: boolean, status: number, video: VideoFromServer, msg?: string }) => {
         if (success) {
           const formedVideo = formVideo(video)
-          console.log('videoByid', formedVideo)
           resolve(formedVideo)
         } else if (status === 500) {
           reject('error interno del servidor')
