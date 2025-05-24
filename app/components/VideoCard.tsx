@@ -42,9 +42,15 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
 
   return (
     <article className={`cardWrapper relative ${className}`}>
-      <Link to={`/watch?v=${video.id}`} className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200' onClick={() => {
-        updateVideoId(video.id)
-      }}>
+      <Link
+        to={`/watch?v=${video.id}`}
+        className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 [&:not(:has(.dots:active)):active]:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
+        onClick={(e) => {
+          if (e.target instanceof HTMLButtonElement) return
+          updateVideoId(video.id)
+        }}
+        title={video.title}
+      >
         <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700 relative'>
             { video.minimalThumbnail && <img className='h-full w-full object-cover flex pointer-events-none select-none blur' src={video.minimalThumbnail} /> }
@@ -57,7 +63,7 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
               }} />
           </div>
         </section>
-        <section className='w-full h-26 ms:h-29 text-sm relative grid ms:grid-cols-[48px_1fr] grid-cols-[64px_1fr]'>
+        <section className='w-full h-26 ms:h-29 text-sm relative grid ms:grid-cols-[48px_1fr_36px] grid-cols-[64px_1fr]'>
           <div />
           <div className='flex-1 text-neutral-400 pt-3 flex flex-col items-start'>
             <h1 className='xs:text-base text-[min(3.2vw,16px)] font-medium text-start leading-[22px] line-clamp-2 text-white'>{video.title}</h1>
