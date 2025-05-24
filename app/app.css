@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: Roboto;
-  src: url('/Roboto.ttf');
+  src: url('/Roboto.woff2') format('woff2');
 }
 
 @theme {
@@ -29,6 +29,9 @@
   --color-link: #51a2ff;
 
   --container-navbar: calc(100% - 240px);
+  --container-aside: 240px;
+
+  --spacing-aside: 240px;
 }
 
 @custom-variant touch {
