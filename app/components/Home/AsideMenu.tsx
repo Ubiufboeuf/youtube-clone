@@ -76,9 +76,14 @@ export function AsideMenu () {
       <label
         id='closeAsideMenu'
         role='button'
-        className={`${path === '/' ? 'ml:hidden' : ''} fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]`}
+        className='ml:hidden fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]'
+        // className={`${path === '/' ? 'ml:hidden' : ''} fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]`}
         htmlFor='checkbox-home-aside-menu'
         // hidden={path === '/'}
+      />
+      <div
+        id='hideAsideMenuHidden'
+        className='w-aside max-w-aside fixed h-full -left-aside z-[101] bg-primary-dark'
       />
     </>
   )

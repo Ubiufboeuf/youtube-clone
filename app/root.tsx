@@ -79,12 +79,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
             not-mobile:ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
             ml:[&:not(:checked)~main>#homeNav]:w-full
-            ml:[&:checked~main>:is(#home,#homeNav)]:w-navbar
+            ml:[&:checked~main>:is(#home,#homeNav,#watch)]:w-navbar
             mobile:[&~main>:is(#home,#homeNav)]:w-full
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
             ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]
-            sm:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu,#watch)]:w-[calc(100%-72px)]
+            sm:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:w-[calc(100%-72px)]
           '
           hidden
           ref={asideInputRef}
@@ -92,7 +92,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <Header />
         {/* <Devices /> */}
-        <main id='main' className='h-full max-w-full min-h-fit max-h-full w-full overflow-hidden pt-14'>
+        <main id='main' className='h-full min-h-fit max-h-full w-full pt-14'>
           <AsideMenu />
           {children}
         </main>

@@ -51,8 +51,8 @@ export function AsideMenuMini () {
                   <Link
                     key={uuidv4()}
                     to={path}
-                    className={`${path === pathname ? 'actualPathMini bg-bg-selected font-medium' : 'hover:bg-neutral-800'}
-                      h-10 aspect-square flex flex-col rounded-lg items-center justify-center
+                    className={`${path === pathname ? 'actualPathMini bg-bg-selected font-medium' : ''}
+                      h-10 aspect-square flex flex-col rounded-lg items-center justify-center hover:bg-neutral-800
                     `}
                     title={name}
                   >
