@@ -44,7 +44,10 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
 
   return (
     <article className={`cardWrapper relative ${className}`}>
-      <Link to={`/watch?v=${video.id}`} className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200' onClick={() => {
+      <Link
+        to={`/watch?v=${video.id}`}
+        className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
+        onClick={() => {
         updateVideoId(video.id)
       }}>
         <section className='w-full aspect-video bg-black rounded-xl flex items-end justify-center relative overflow-hidden'>
