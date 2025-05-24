@@ -8,7 +8,7 @@ import { useLocation } from 'react-router'
 
 const itemsAside: ItemAside[][] = [
   [
-    { name: 'Principal', path: '/', Icon: ({ active = false }) => <IconHome active={active} /> },
+    { name: 'Inicio', path: '/', Icon: ({ active = false }) => <IconHome active={active} /> },
     { name: 'Explorar', path: '/explore', Icon: ({ active = false }) => <IconExplore active={active} /> },
     { name: 'Shorts', path: '/shorts', Icon: ({ active = false }) => <IconShorts active={active} /> },
     { name: 'Modo TV', path: '/tv', Icon: ({ active = false }) => <IconTV active={active} /> }
