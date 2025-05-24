@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
-
-
 export default function VideoCard ({ video, className = '' }: { video: Video, className?: string }) {
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
