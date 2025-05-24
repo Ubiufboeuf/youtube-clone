@@ -19,8 +19,12 @@ export function meta ({ }: Route.MetaArgs) {
 
 export async function clientLoader () {
   await import('dashjs')
+  try {
   return await getAllVideos({ from: 0, to: 20 })
-    
+  } catch (err) {
+    console.error(err)
+    return []
+  }
 }
 
 export default function Watch ({ loaderData }: Route.ComponentProps) {
