@@ -26,9 +26,7 @@ export function formVideo (v: VideoFromServer) {
   const video: Video = {
     ...v,
     source: `${VIDEO_ENDPOINT}/${v.id}/manifest.mpd`,
-    thumbnails,
-    thumbnail: `${THUMBNAIL_ENDPOINT}/${v.thumbnail}`,
-    minimalThumbnail: `${THUMBNAIL_ENDPOINT}/${v.minimalThumbnail}`
+    thumbnails
   }
   return video
 }
