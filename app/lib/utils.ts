@@ -65,3 +65,7 @@ export function parsePublicationDate (publicationDate: string) {
   else if (dif >= 60) return `${Math.floor(dif / 60)} ${Math.floor(dif / 60) === 1 ? 'minuto' : 'minutos'}`
   else return `${dif} ${dif === 1 ? 'segundo' : 'segundos'}`
 }
+
+export function getAvatar (id: string = '') {
+  return `${AVATAR_ENDPOINT}/${id}`
+}
