@@ -69,3 +69,7 @@ export function parsePublicationDate (publicationDate: string) {
 export function getAvatar (id: string = '') {
   return `${AVATAR_ENDPOINT}/${id}`
 }
+
+export function getThumbnail (id: string = '') {
+  return `${THUMBNAIL_ENDPOINT}/${id}`
+}
