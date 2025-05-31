@@ -1,5 +1,5 @@
 import type { Thumbnail, Video, VideoFromServer } from '@/env'
-import { BACKGROUND_ENDPOINT, THUMBNAIL_ENDPOINT, VIDEO_ENDPOINT } from './constants'
+import { THUMBNAIL_ENDPOINT, VIDEO_ENDPOINT } from './constants'
 
 export function formVideo (v: VideoFromServer) {
   // console.log(v)
