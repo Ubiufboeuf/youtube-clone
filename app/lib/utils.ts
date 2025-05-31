@@ -1,4 +1,5 @@
 import { Temporal } from 'temporal-polyfill'
+import { AVATAR_ENDPOINT, THUMBNAIL_ENDPOINT } from './constants'
 
 export function title(t?: string) {
   return t ? `${t} - YouTube` : 'YouTube'
