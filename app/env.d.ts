@@ -1,3 +1,7 @@
+import type dashjs from 'dashjs'
+
+export type DashJS = dashjs
+
 export interface VideoFromServer extends object {
   id: string
   title: string
