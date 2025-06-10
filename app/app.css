@@ -29,7 +29,9 @@
   --color-link: #51a2ff;
 
   --container-navbar: calc(100% - 240px);
+  --container-asideMini: calc(100% - 72px);
   --container-aside: 240px;
+  --container-videoCard: 500px;
 
   --spacing-aside: 240px;
 }
