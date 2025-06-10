@@ -58,6 +58,12 @@
   }
 }
 
+@custom-variant asideOpened {
+  &:where(.is-aside-opened *) {
+    @slot;
+  }
+}
+
 :root {
   font-family: Roboto, "Inter", ui-sans-serif, system-ui, sans-serif;
 }
