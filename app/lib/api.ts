@@ -5,7 +5,11 @@ import { DATA_ENDPOINT } from './constants'
 
 export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number }): Promise<Video[]> {
   return new Promise((resolve, reject) => {
-    fetch(`${DATA_ENDPOINT}/videos?range=${from}_${to}`)
+    fetch(`${DATA_VIDEOS_ENDPOINT}?range=${from}_${to}`, {
+      headers: {
+        'ngrok-skip-browser-warning': ''
+      }
+    })
       .then(res => res.json())
       .catch((e) => {
         reject(['Error consiguiendo los videos', e])
