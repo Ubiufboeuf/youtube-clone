@@ -7,8 +7,8 @@ export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number 
   return new Promise((resolve, reject) => {
     fetch(`${DATA_ENDPOINT}/videos?range=${from}_${to}`)
       .then(res => res.json())
-      .catch(() => {
-        reject('Error consiguiendo los videos')
+      .catch((e) => {
+        reject(['Error consiguiendo los videos', e])
       })
       .then(data => {
         if (!data.success) return reject(data.msg)
@@ -18,8 +18,8 @@ export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number 
         })
         resolve(videos)
       })
-      .catch(() => {
-        reject('Error formando los videos')
+      .catch((e) => {
+        reject(['Error formando los videos', e])
       })
   })
 }
