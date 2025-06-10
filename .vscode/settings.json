@@ -3,6 +3,7 @@
     "utils",
     "settings",
     "pnpm",
-    "gitignore"
+    "gitignore",
+    "env.d.ts"
   ]
 }
