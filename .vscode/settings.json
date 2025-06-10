@@ -4,6 +4,7 @@
     "settings",
     "pnpm",
     "gitignore",
-    "env.d.ts"
+    "env.d.ts",
+    "ui"
   ]
 }
