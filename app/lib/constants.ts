@@ -7,3 +7,5 @@ export const ERROR_ENDPOINT = `${SERVER_URL}/error`
 export const AVATAR_ENDPOINT = `${SERVER_URL}/avatar`
 
 export const DATA_VIDEO_ENDPOINT = `${DATA_ENDPOINT}/video` // información de un video
+export const DATA_VIDEOS_ENDPOINT = `${DATA_ENDPOINT}/videos` // información de uno o más videos
+export const DATA_CREATOR_ENDPOINT = `${DATA_ENDPOINT}/video` // información de un creador
