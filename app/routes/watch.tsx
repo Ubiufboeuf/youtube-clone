@@ -30,7 +30,11 @@ export async function clientLoader () {
   try {
     const search = new URLSearchParams(document.location.search)
     const id = search.get('v')
-    const res = await fetch(`${DATA_VIDEO_ENDPOINT}?id=${id}&prop=title`)
+    const res = await fetch(`${DATA_VIDEO_ENDPOINT}?id=${id}&prop=title`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'a'
+      }
+    })
     videoTitle = (await res.json()).value
     console.log({videoTitle})
   } catch (err) {
