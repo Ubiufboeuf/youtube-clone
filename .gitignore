@@ -5,6 +5,3 @@
 /.react-router/
 /build/
 .env
-
-pnpm-lock.yaml
-pnpm-workspace.yaml
