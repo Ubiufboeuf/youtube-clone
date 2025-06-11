@@ -6,6 +6,6 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   server: {
-    allowedHosts: ['https://youtube-clone-1d8.pages.dev']
+    allowedHosts: ['youtube-clone-1d8-pages-dev', 'bc5d-2800-a4-1030-fe00-fffc-9d2f-f701-2853.ngrok-free.app']
   }
 })
