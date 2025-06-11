@@ -7,7 +7,7 @@ export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number 
   return new Promise((resolve, reject) => {
     fetch(`${DATA_VIDEOS_ENDPOINT}?range=${from}_${to}`, {
       headers: {
-        'ngrok-skip-browser-warning': ''
+        'ngrok-skip-browser-warning': 'a'
       }
     })
       .then(res => res.json())
@@ -31,7 +31,11 @@ export function getAllVideos ({ from = 0, to = 0 }: { from?: number, to: number 
 export function getCreatorById (id: string): Promise<Creator> {
   return new Promise((resolve, reject) => {
     if (!id) reject('Falta especificar la id del creador')
-    fetch(`${DATA_CREATOR_ENDPOINT}?id=${id}`)
+    fetch(`${DATA_CREATOR_ENDPOINT}?id=${id}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'a'
+      }
+    })
       .then(res => res.json())
       .catch(() => {
         reject('Error consiguiendo la información del creador')
@@ -50,7 +54,11 @@ export function getCreatorById (id: string): Promise<Creator> {
 export function getVideoById (id: string): Promise<Video> {
   return new Promise((resolve, reject) => {
     if (!id) reject('Falta especificar la id del video')
-    fetch(`${DATA_VIDEO_ENDPOINT}?id=${id}`)
+    fetch(`${DATA_VIDEO_ENDPOINT}?id=${id}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'a'
+      }
+    })
       .then(res => res.json())
       .catch(() => {
         console.error('Error obteniendo el video')
