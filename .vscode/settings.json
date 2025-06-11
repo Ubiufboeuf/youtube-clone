@@ -5,6 +5,8 @@
     "pnpm",
     "gitignore",
     "env.d.ts",
-    "ui"
+    "ui",
+    "api",
+    "aside-menu"
   ]
 }
