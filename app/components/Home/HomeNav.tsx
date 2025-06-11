@@ -1,7 +1,6 @@
 import { useRef, type ChangeEvent } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { IconMagicFeed } from '../Icons'
-import { useVideosListStore } from '@/stores/useVideosListStore'
 import { user } from '@/lib/mocks'
 
 const TAG_FILTERS = {
@@ -45,7 +44,7 @@ export function HomeNav () {
     <nav
       id='homeNav'
       hidden={user.type === 'anonimous'}
-      className='fixed right-0 [transition:width_250ms_ease] top-14 h-10 min-h-fit flex items-end xs:h-14 py-2 w-full bg-primary-dark sm:px-6 xs:px-4 px-2 z-[90]'
+      className='fixed right-0 [transition:width_250ms_ease] top-14 h-10 min-h-fit flex items-end xs:h-14 py-2 w-full bg-primary-dark sm:px-6 xs:px-4 px-2 z-[90] ml:asideOpened:w-navbar ml:w-navbar sm:w-asideMini mobile:asideOpened:w-full'
     >
       <div className='max-w-full w-full gap-3 flex items-center h-7 xs:h-9 overflow-x-auto [scrollbar-width:none] xs:py-0.5'>
         <button className='h-full min-w-fit flex items-center justify-center cursor-pointer xs:px-3 px-2.5 bg-neutral-700 xs:rounded-lg rounded-md focus-visible:outline-0'>

@@ -1,5 +1,5 @@
 import type { Creator, Video, VideoVisto } from '@/env'
-import { parseViews, parsePublicationDate, parseDuration } from '@/lib/utils'
+import { parseViews, parsePublicationDate, parseDuration, getAvatar, getThumbnail } from '@/lib/utils'
 import { IconChannelVerified, IconDots } from './Icons'
 import { Link, useNavigate } from 'react-router'
 import { getCreatorById } from '@/lib/api'
@@ -41,7 +41,7 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
   }
 
   return (
-    <article className={`cardWrapper relative ${className}`}>
+    <article className={`cardWrapper relative group ${className}`}>
       <Link
         to={`/watch?v=${video.id}`}
         className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 [&:not(:has(.dots:active)):active]:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
@@ -53,8 +53,16 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
       >
         <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700 relative'>
-            { video.minimalThumbnail && <img className='h-full w-full object-cover flex pointer-events-none select-none blur' src={video.minimalThumbnail} /> }
-            { video.thumbnail && <img className='absolute left-0 top-0 h-full w-full object-cover flex pointer-events-none select-none' src={video.thumbnail} alt={video.title} /> }
+            { video.minimalThumbnail && <img
+              className='h-full w-full object-cover flex pointer-events-none select-none blur'
+              src={getThumbnail(video?.minimalThumbnail)}
+            /> }
+            { video.thumbnail && <img
+              className='absolute left-0 top-0 h-full w-full object-cover flex select-none'
+              src={getThumbnail(video?.thumbnail)}
+              alt={video.title}
+              loading='lazy'
+            /> }
           </div>
           <time className='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
           <div className='w-full h-1 absolute bottom-0 bg-[#666a]' style={{display: userVideoInfo?.timeSeen ? 'block' : 'none'}}>
@@ -63,7 +71,7 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
               }} />
           </div>
         </section>
-        <section className='w-full h-26 ms:h-29 text-sm relative grid ms:grid-cols-[48px_1fr_36px] grid-cols-[64px_1fr]'>
+        <section className='w-full h-fit pb-4 text-sm relative grid ms:grid-cols-[48px_1fr_36px] grid-cols-[64px_1fr]'>
           <div />
           <div className='flex-1 text-neutral-400 pt-3 flex flex-col items-start'>
             <h1 className='xs:text-base text-[min(3.2vw,16px)] font-medium text-start leading-[22px] line-clamp-2 text-white'>{video.title}</h1>
@@ -112,8 +120,10 @@ export default function VideoCard ({ video, className = '' }: { video: Video, cl
           >
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
               { video?.uploader_id && <img
-                  src={`http://localhost:1234/avatar/${video.uploader_id}`} alt={'a'}
+                  src={getAvatar(video?.uploader_id)}
+                  alt={video?.uploader}
                   className='size-full'
+                  loading='lazy'
                 />
               }
             </div>

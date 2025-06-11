@@ -10,35 +10,69 @@ import {
 import type { Route } from './+types/root'
 import './app.css'
 import Header from './components/Header/Header'
-import { useEffect, useRef, type ChangeEvent } from 'react'
+import { useEffect } from 'react'
 import { AsideMenu } from './components/Home/AsideMenu'
 import { useUserStore } from './stores/useUserStore'
 import { user as testUser } from './lib/mocks'
 import VideoCardFallback from './components/VideoCardFallback'
 import { Footer } from './components/Footer'
-import { Devices } from './components/test/devices'
+import { useAsideMenuStore } from './stores/useAsideMenuStore'
+// import { Devices } from './components/test/devices'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'icon', href: '/favicon.png' },
   { rel: 'preload', href: '/Roboto.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' }
 ]
 
+export async function loader ({ request }: { request: Request }) {
+  return { url: new URL(request.url) }
+}
+
+export function HydrateFallback ({ loaderData: { url } }: Route.ComponentProps) {
+  const { pathname } = url
+  return (
+    <section
+      id='hydrateFallback'
+      className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-asideMini'
+      hidden={pathname !== '/'}
+    >
+      <div className='h-fit w-full max-w-full grid grid-cols-[min(100%,500px)] ms:grid-cols-[repeat(auto-fill,minmax(312px,1fr))] sm:p-6 ms:gap-4 justify-center items-start'>
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+        <VideoCardFallback />
+      </div>
+    </section>
+  )
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const asideInputRef = useRef<HTMLInputElement>(null)
+  const isAsideOpened = useAsideMenuStore(state => state.isOpen)
+  const setIsAsideOpened = useAsideMenuStore(state => state.setIsOpen)
   const setUser = useUserStore(state => state.setUser)
 
-  function handleAsideInput (event: ChangeEvent<HTMLInputElement>) {
-    const { checked } = event.target
-    window.localStorage.setItem('asideDefaultOpened', checked.toString())
-  }
+  useEffect(() => {
+    setUser(testUser)
+    detectDeviceType()
+    setIsAsideOpened(localStorage.getItem('asideDefaultOpened') === 'true')
+  }, [])
 
   useEffect(() => {
-    const opened = window.localStorage.getItem('asideDefaultOpened')
-    if (asideInputRef.current) asideInputRef.current.checked = opened === 'true'
-    setUser(testUser)
-
-    detectDeviceType()
-  }, [])
+    if (isAsideOpened) document.body.classList.add('is-aside-opened')
+    else document.body.classList.remove('is-aside-opened')
+  }, [isAsideOpened])
 
   function detectDeviceType() {
     const ua = navigator.userAgent
@@ -71,25 +105,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className='h-full w-full min-h-fit hidden not-mobile:flex flex-col items-center'>
-        <input
+        {/* <input
           id='checkbox-home-aside-menu'
           type='checkbox'
-          className='
-            [&:checked~main>#asideMenu]:left-[0px] [&:not(:checked)~main>#asideMenu]:-left-[240px]
-            [&:checked~main>#closeAsideMenu]:bg-[#0006] [&:not(:checked)~main>#closeAsideMenu]:bg-transparent [&:checked~main>#closeAsideMenu]:left-0
-            not-mobile:ml:[&:not(:checked)~main>#homeNav]:w-[calc(100%-72px)]
-            ml:[&:not(:checked)~main>#homeNav]:w-full
-            ml:[&:checked~main>:is(#home,#homeNav,#watch)]:w-navbar
-            mobile:[&~main>:is(#home,#homeNav)]:w-full
-            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
-            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
-            ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]
-            sm:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:w-[calc(100%-72px)]
-          '
+          // className='
+          //   ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:absolute
+          //   ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:right-0
+          //   ml:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:[transition:width_250ms_ease]
+          //   sm:[&~main>*:not(#asideMenu,#aside-menu-mini,#aside-menu-tablet,#closeAsideMenu)]:w-[calc(100%-72px)]
+          // '
           hidden
-          ref={asideInputRef}
           onInput={handleAsideInput}
-        />
+        /> */}
         <Header />
         {/* <Devices /> */}
         <main id='main' className='h-full min-h-fit max-h-full w-full pt-14'>
@@ -102,40 +129,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  )
-}
-
-export async function loader ({ request }: { request: Request }) {
-  return { url: new URL(request.url) }
-}
-
-export function HydrateFallback ({ loaderData: { url } }: Route.ComponentProps) {
-  const { pathname } = url
-  return (
-    <section
-      id='hydrateFallback'
-      className='absolute top-28 right-0 [transition:width_250ms_ease] flex h-[calc(100%-112px)] w-full ml:w-navbar'
-      hidden={pathname !== '/'}
-    >
-      <div className='h-fit w-full max-w-full grid grid-cols-[min(100%,500px)] ms:grid-cols-[repeat(auto-fill,minmax(312px,1fr))] sm:p-6 ms:gap-4 justify-center items-start'>
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-        <VideoCardFallback />
-      </div>
-    </section>
   )
 }
 

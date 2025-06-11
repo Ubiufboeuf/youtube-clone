@@ -9,25 +9,41 @@ import { useLocation } from 'react-router'
 import { AsideMenuMini } from '@/components/Home/AsideMenuMini'
 import { AsideRight } from '@/components/watch/AsideRight'
 import { InfoAndComments } from '@/components/watch/InfoAndComments'
-
-export function meta ({ }: Route.MetaArgs) {
-  return [
-    { title: title('Video') }
-  ]
-}
+import { DATA_VIDEO_ENDPOINT } from '@/lib/constants'
 
 export async function clientLoader () {
-  await import('dashjs')
+  let dashjs
   try {
-    return await getAllVideos({ from: 0, to: 20 })
+    dashjs = await import('dashjs')
   } catch (err) {
     console.error(err)
-    return []
   }
+
+  let videos
+  try {
+    videos = await getAllVideos({ from: 0, to: 20 })
+  } catch (err) {
+    console.error(err)
+  }
+
+  let videoTitle = ''
+  try {
+    const search = new URLSearchParams(document.location.search)
+    const id = search.get('v')
+    const res = await fetch(`${DATA_VIDEO_ENDPOINT}?id=${id}&prop=title`)
+    videoTitle = (await res.json()).value
+    console.log({videoTitle})
+  } catch (err) {
+    console.error(err)
+  }
+
+  document.title = videoTitle
+
+  return { dashjs, videos: videos ?? [] }
 }
 
 export default function Watch ({ loaderData }: Route.ComponentProps) {
-  const [videosList] = useState<Video[]>(loaderData)
+  const [videosList] = useState<Video[]>(loaderData.videos)
   const [cinemaModeActive, setCinemaModeActive] = useState<boolean>(false)
   const videoInfo = useVideoInfoStore((state) => state.videoInfo)
   const updateVideoInfo = useVideoInfoStore((state) => state.updateVideoInfo)
@@ -43,11 +59,22 @@ export default function Watch ({ loaderData }: Route.ComponentProps) {
     }
   }, [])
 
+  useEffect(() => {
+    if (videoInfo?.title) {
+      document.title = title(videoInfo?.title) || ''
+    }
+  }, [videoInfo])
+
   function handleKeyUp (event: KeyboardEvent) {
     const { key } = event
     const lowerKey = key.toLowerCase()
 
-    if ((watchRef.current?.contains(document.activeElement) || document.activeElement?.tagName !== 'INPUT') && lowerKey === 't') {
+    if (
+      (
+        watchRef.current?.contains(document.activeElement) ||
+        document.activeElement?.tagName !== 'INPUT'
+      ) && lowerKey === 't'
+    ) {
       toggleCinemaMode()
     }
   }
@@ -79,11 +106,11 @@ export default function Watch ({ loaderData }: Route.ComponentProps) {
         id='watch'
         className={`
           ${cinemaModeActive ? '' : 'p-4 pb-0'}
-          h-[calc(100%-56px)] min-h-fit absolute right-0 w-full max-w-full grid gap-6 justify-items-center
+          h-[calc(100%-56px)] min-h-fit absolute right-0 w-full max-w-full grid gap-6 justify-items-center ml:asideOpened:w-navbar ml:[grid-template-areas:'player_aside''extra_aside'] [grid-template-areas:'player''aside'] ml:grid-cols-[2fr_1fr]
         `}
         ref={watchRef}
       >
-        <Player cinemaModeActive={cinemaModeActive} videoInfo={videoInfo} />
+        <Player cinemaModeActive={cinemaModeActive} videoInfo={videoInfo} dashjs={loaderData.dashjs} />
         <AsideRight videos={videosList} cinemaModeActive={cinemaModeActive} />
         <InfoAndComments />
       </div>

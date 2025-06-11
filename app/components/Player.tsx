@@ -2,13 +2,14 @@ import { getVideoById } from '@/lib/api'
 import { parseDuration } from '@/lib/utils'
 import { usePlayerStore } from '@/stores/usePlayerStore'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
-import { VideoQualities } from './VideoQualities'
-import type { Video, VideoVisto } from '@/env'
+import type { DashJS, Video, VideoVisto } from '@/env'
 import { useVideoInfoStore } from '@/stores/useVideoInfoStore'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
-export function Player ({ videoInfo }: { videoInfo: Video | undefined }) {
+const AUTO_START = false
+
+export function Player ({ videoInfo, cinemaModeActive, dashjs }: { videoInfo: Video | undefined, cinemaModeActive?: boolean, dashjs: DashJS }) {
   const videoElementRef = useRef<HTMLVideoElement>(null)
   const videoElementWrapperRef = useRef<HTMLDivElement>(null)
   const controlsRef = useRef<HTMLDivElement>(null)
@@ -78,7 +79,7 @@ export function Player ({ videoInfo }: { videoInfo: Video | undefined }) {
       })
       console.log({ t, timeSeen: userVideoInfo?.timeSeen })
       try {
-        p.initialize(videoElementRef.current, videoInfo?.source, false, currentTime ?? t ?? userVideoInfo?.timeSeen ?? 0)
+        p.initialize(videoElementRef.current, videoInfo?.source, AUTO_START, currentTime ?? t ?? userVideoInfo?.timeSeen ?? 0)
       } catch (err) {
         console.error('err initializing player:', err)
       }
@@ -122,7 +123,7 @@ export function Player ({ videoInfo }: { videoInfo: Video | undefined }) {
     }
   }
 
-  const handlePlaying = () => setPaused(false)
+  const handlePlaying = () => console.log(player?.getCurrentTrackFor('video'))
   const handlePause = () => setPaused(true)
 
   function updateCurrentTime (event: ChangeEvent<HTMLInputElement>) {
@@ -148,17 +149,18 @@ export function Player ({ videoInfo }: { videoInfo: Video | undefined }) {
   return (
     <main
       ref={videoElementWrapperRef}
-      className='max-h-[min(74vh,700px)] aspect-video w-full overflow-hidden bg-black flex items-center justify-center relative z-[96]'
+      className={`${cinemaModeActive ? '[grid-column:1/3]': 'rounded-xl'} [grid-row:1] h-[clamp(100%,100%,min(100rem,60dvh,100%))] w-full max-w-800 overflow-hidden bg-black flex items-center justify-center relative z-[96]`}
+      style={{ gridArea: 'player' }}
     >
       <video
         ref={videoElementRef}
         id='videoElement'
-        className='h-full max-h-[inherit] w-full object-contain bg-black'
+        className='h-full w-full object-contain bg-black'
         onPlaying={handlePlaying}
         onPause={handlePause}
         onTimeUpdate={handleTimeUpdate}
-        onLoadStart={() => console.log('loadstart')}
-        onLoadedData={() => console.log('loadeddata')}
+        // onLoadStart={() => console.log('loadstart')}
+        // onLoadedData={() => console.log('loadeddata')}
       />
       <div className='absolute h-full w-full' /* onClick={toggleControls} */ onClick={togglePlaybackState}>
         {/* <button id='start' onClick={togglePlay} className='absolute z-10 h-full w-full left-0 top-0'></button> */}
@@ -166,7 +168,7 @@ export function Player ({ videoInfo }: { videoInfo: Video | undefined }) {
           {/* { videoInfo?.selectedQuality === 'audio_only' && <img src={''} onError={(e) => e.currentTarget.style.display = 'none'} className='h-ful w-full max-w-full max-h-full object-contain' /> } */}
         </div>
       </div>
-      { videoInfo && <VideoQualities videoInfo={videoInfo} /> }
+      {/* { videoInfo && <VideoQualities videoInfo={videoInfo} /> } */}
       <div ref={controlsRef} id='controls' className='absolute z-20 bottom-0 h-[51px] w-[calc(100%-24px)] bg-[#000c]'>
         <div className='absolute top-0 left-[50%] [transform:translateX(-50%)] bg-black flex items-center justify-center h-[3px] w-full'>
           <div className='w-full h-full relative flex items-center justify-center'>

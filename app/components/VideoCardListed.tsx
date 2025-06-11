@@ -1,13 +1,13 @@
 import type { Creator, Video, VideoVisto } from '@/env'
 import { parseViews, parsePublicationDate, parseDuration, getThumbnail, getAvatar } from '@/lib/utils'
-import { IconChannelVerified } from './Icons'
+import { IconChannelVerified, IconDots } from './Icons'
 import { Link, useNavigate } from 'react-router'
 import { getCreatorById } from '@/lib/api'
 import { useEffect, useState } from 'react'
 import { useSearchParamsStore } from '@/stores/useSearchParamsStore'
 import { useUserStore } from '@/stores/useUserStore'
 
-export default function VideoCardSlim ({ video, className = '' }: { video: Video, className?: string }) {
+export default function VideoCardListed ({ video, className = '' }: { video: Video, className?: string }) {
   const [creator, setCreator] = useState<Creator>()
   const [userVideoInfo, setUserVideoInfo] = useState<VideoVisto>()
   const user = useUserStore(state => state.user)
@@ -41,26 +41,27 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
   }
 
   return (
-    <article className={`cardWrapper relative ${className}`}>
+    <article className={`cardWrapper relative w-full ${className}`}>
       <Link
         to={`/watch?v=${video.id}`}
-        className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 active:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
-        onClick={() => {
+        className='videoCard h-fit w-full cursor-pointer items-start flex flex-col focus:outline-0 [&:not(:has(.dots:active)):active]:bg-neutral-600/20 rounded-xl transition-colors active:duration-200'
+        onClick={(e) => {
+          if (e.target instanceof HTMLButtonElement) return
           updateVideoId(video.id)
         }}
         title={video.title}
       >
-        <section className='w-full aspect-video bg-black rounded-xl flex items-end justify-center relative overflow-hidden'>
+        <section className='w-full aspect-video bg-black xs:rounded-xl flex items-end justify-center relative overflow-hidden'>
           <div className='h-full w-full bg-neutral-700 relative'>
             { video.minimalThumbnail && <img
               className='h-full w-full object-cover flex pointer-events-none select-none blur'
-              src={getThumbnail(video?.minimalThumbnail)}
+              src={getThumbnail(video.minimalThumbnail)}
             /> }
             { video.thumbnail && <img
               className='absolute left-0 top-0 h-full w-full object-cover flex pointer-events-none select-none'
-              loading='lazy'
-              src={getThumbnail(video?.thumbnail)}
+              src={getThumbnail(video.thumbnail)}
               alt={video.title}
+              loading='lazy'
             /> }
           </div>
           <time className='absolute bottom-2 right-2 bg-[#000a] rounded font-semibold text-xs px-1 py-[2px]'>{parsedDuration}</time>
@@ -70,7 +71,7 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
               }} />
           </div>
         </section>
-        <section className='w-full h-26 ms:h-29 flex-1 text-sm relative grid ms:grid-cols-[48px_1fr] grid-cols-[64px_1fr]'>
+        <section className='w-full h-26 ms:h-29 text-sm relative grid ms:grid-cols-[48px_1fr_36px] grid-cols-[64px_1fr]'>
           <div />
           <div className='flex-1 text-neutral-400 pt-3 flex flex-col items-start'>
             <h1 className='xs:text-base text-[min(3.2vw,16px)] font-medium text-start leading-[22px] line-clamp-2 text-white'>{video.title}</h1>
@@ -93,11 +94,21 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
               )}
             </div>
           </div>
+          <div className='h-full w-full flex-1 pt-3'>
+            <button
+              className='dots absolute right-0 hover:bg-neutral-800 cursor-pointer rounded-full aspect-square size-9 flex items-center justify-center'
+              onClick={(e) => e.preventDefault()}
+            >
+              <div className='size-5 overflow-hidden flex items-center justify-center pointer-events-none'>
+                <IconDots />
+              </div>
+            </button>
+          </div>
         </section>
       </Link>
       <article
         className='absolute top-0 left-0 h-full w-full flex flex-col pointer-events-none'
-        title={video.uploader}
+        title={video.uploader ?? ''}
       >
         <section className='w-full aspect-video rounded-xl' />
         <section className='w-full flex min-h-[116px] h-full pt-3 gap-2 flex-1 relative'>
@@ -109,8 +120,8 @@ export default function VideoCardSlim ({ video, className = '' }: { video: Video
           >
             <div className='ms:size-9 xs:size-10 size-[min(40px,9vw)] aspect-square object-contain max-h-full max-w-full rounded-full overflow-hidden bg-neutral-700'>
               { video?.uploader_id && <img
-                  src={getAvatar(video?.uploader_id)}
-                  alt={video?.uploader}
+                  src={getAvatar(video.uploader_id)}
+                  alt={video.uploader}
                   className='size-full'
                   loading='lazy'
                 />

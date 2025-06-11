@@ -10,6 +10,7 @@ import { HomeNoVideos } from '@/components/Home/HomeNoVideos'
 import { HomeNormal } from '@/components/Home/HomeNormal'
 import type { Video } from '@/env'
 import { InCaseYouMissed } from '@/components/Home/InCaseYouMissed'
+import type { Route } from './+types/home'
 
 export async function clientLoader() {
   try {
@@ -21,8 +22,7 @@ export async function clientLoader() {
   }
 }
 
-export default function Home () {
-  const videosSugeridos = useLoaderData<typeof clientLoader>()
+export default function Home ({ loaderData: videosSugeridos }: Route.ComponentProps) {
   const [HomeMainContent, setHomeMainContent] = useState<FC<{ videosSugeridos: Video[] }>>()
 
   useEffect(() => {
@@ -42,8 +42,8 @@ export default function Home () {
       <AsideMenuMini />
       <AsideMenuTablet />
       <HomeNav />
-      <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex flex-col min-h-fit h-[calc(100%-112px)] w-full ml:w-navbar'>
-        { videosSugeridos?.length ? <InCaseYouMissed videos={videosSugeridos} /> : null }
+      <section id='home' className='absolute top-28 right-0 [transition:width_250ms_ease] flex flex-col min-h-fit h-[calc(100%-112px)] ml:asideOpened:w-navbar mobile:asideOpened:w-full sm:w-asideMini w-full'>
+        {/* { videosSugeridos?.length ? <InCaseYouMissed videos={videosSugeridos} /> : null } */}
         { HomeMainContent && <HomeMainContent videosSugeridos={videosSugeridos} /> }
       </section>
     </>

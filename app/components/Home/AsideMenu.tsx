@@ -6,6 +6,7 @@ import { MenuLink } from '@/components/AsideNavigation/MenuLink'
 import { useEffect, useRef, useState } from 'react'
 import { MenuExpandableLink } from '@/components/AsideNavigation/MenuExpandableLink'
 import type { ItemAside } from '@/env'
+import { useAsideMenuStore } from '@/stores/useAsideMenuStore'
 
 const itemsAside: ItemAside[][] = [
   [
@@ -30,15 +31,21 @@ export function AsideMenu () {
   const [path, setPath] = useState<string>('')
   const location = useLocation()
   const asideMenuRef = useRef<HTMLDivElement>(null)
+  const isAsideOpened = useAsideMenuStore(state => state.isOpen)
+  const setIsAsideOpened = useAsideMenuStore(state => state.setIsOpen)
 
   useEffect(() => {
     if (!location) return
     setPath(location.pathname)
   }, [location])
 
+  function toggleAsideMenu () {
+    setIsAsideOpened(!isAsideOpened)
+  }
+
   return (
     <>
-      <aside id='asideMenu' ref={asideMenuRef} className='fixed top-14 left-[var(--left)] [transition:left_250ms_ease] [--left:0px] z-[100] w-60 h-[calc(100dvh-56px)] bg-primary-dark'>
+      <aside id='asideMenu' ref={asideMenuRef} className='fixed top-14 [transition:left_250ms_ease] z-[100] w-60 h-[calc(100dvh-56px)] bg-primary-dark asideOpened:left-0 -left-60'>
         <div className='h-full w-full max-h-full flex flex-col items-center [scrollbar-gutter:stable] px-3 pr-1 pb-2 gap-2 overflow-y-auto [scrollbar-width:thin]'>
           {
             itemsAside.map(item => {
@@ -73,13 +80,9 @@ export function AsideMenu () {
           </section>
         </div>
       </aside>
-      <label
-        id='closeAsideMenu'
-        role='button'
-        className='ml:hidden fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]'
-        // className={`${path === '/' ? 'ml:hidden' : ''} fixed h-screen w-full flex top-0 -left-full [transition:background_250ms_ease] z-[99]`}
-        htmlFor='checkbox-home-aside-menu'
-        // hidden={path === '/'}
+      <button
+        className='ml:hidden fixed h-screen w-full flex top-0 asideOpened:bg-[#0006] bg-transparent asideOpened:left-0 -left-full [transition:background_250ms_ease] z-[99]'
+        onClick={toggleAsideMenu}
       />
       <div
         id='hideAsideMenuHidden'
